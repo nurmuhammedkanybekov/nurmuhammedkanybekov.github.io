@@ -107,6 +107,8 @@ export type Featured = {
   title: string;
   overline: string;
   cover: 'remnant' | 'akven' | 'tdjamaat' | 'nira';
+  // Optional real screenshot, e.g. '/remnant-cover.jpg' in public/. Replaces the SVG cover when set.
+  image?: string;
   description: string;
   tech: string[];
   github?: string;
