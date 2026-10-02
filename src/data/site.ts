@@ -34,7 +34,7 @@ export const about = {
   paragraphs: [
     "I grew up in Kyrgyzstan and came to Budapest to study computer science at <a href=\"https://www.elte.hu/en/\" target=\"_blank\" rel=\"noopener\">ELTE</a> on a Stipendium Hungaricum scholarship. Backend work is where I'm most at home: Java, Spring Boot, Postgres, and the boring-but-important parts like who is allowed to change what.",
     "Most of what I build is for people I actually know. My thesis is an online shop for my parents' business back home. tdJamaat is a weekly tracker around 30 people in my community use, so if a score is wrong, someone notices. And when something sounds too hard, like a 3D game with no engine or a compiler in a day, that's usually why I start it.",
-    "Right now I'm a research assistant at ELTE, building audio pipelines that pick dog vocalizations out of 87+ hours of recordings. I also TA Data Structures & Algorithms and co-organize <a href=\"https://gdg.community.dev/gdg-budapest/\" target=\"_blank\" rel=\"noopener\">GDG Budapest</a>. Away from the keyboard I run, play volleyball and football, and read more physics than a CS student probably needs.",
+    "Right now I'm a research assistant at ELTE, building audio pipelines that pick dog vocalizations out of 87+ hours of recordings. I also TA Data Structures & Algorithms and co-organize <a href=\"https://gdg.community.dev/gdg-budapest/\" target=\"_blank\" rel=\"noopener\">GDG Budapest</a>. Away from the keyboard I play chess (around 1600 FIDE), play volleyball, watch too many series, and read a lot. Game of Thrones is the big one: I know that world's history better than my own.",
   ],
   techIntro: "Here's what I've been working with recently:",
   tech: ['Java & Spring Boot', 'Python & FastAPI', 'C & LLVM', 'TypeScript & React', 'PostgreSQL & pgvector', 'Docker, AWS & Terraform'],
@@ -95,7 +95,7 @@ export const jobs: Job[] = [
     company: 'GDG on Campus ELTE',
     title: 'Co-Lead',
     range: 'Dec 2024 – Sep 2026',
-    note: 'Joined as a Team Member, then T&M Lead, then Co-Lead: almost two years in total.',
+    note: 'Joined as a Team Member, then Technical & Marketing Lead, then Co-Lead: almost two years in total.',
     points: [
       'Co-led a 40-person team through a platform and content overhaul: 25% more traffic and 1M+ views.',
       'Organized 12+ tech events for 950+ attendees, handling speakers, live demos and logistics.',
@@ -113,6 +113,7 @@ export type Featured = {
   tech: string[];
   github?: string;
   live?: string;
+  liveLabel?: string;
 };
 
 export const featured: Featured[] = [
@@ -123,8 +124,10 @@ export const featured: Featured[] = [
     description:
       "A co-op survival horror game set in an abandoned Soviet mine under the Tian Shan. I wrote all of it in TypeScript and Three.js with no game engine: rendering, physics, creature AI that hunts by sound, 3D audio, and WebRTC multiplayer with relay fallback. Ten levels, nine creature types, 196 tests, zero downloads.",
     tech: ['TypeScript', 'Three.js', 'WebRTC', 'Web Audio'],
+    image: '/remnant-cover.jpg',
     github: 'https://github.com/nurmuhammedkanybekov/remnant',
     live: 'https://nurmuhammedkanybekov.github.io/remnant',
+    liveLabel: 'Play it',
   },
   {
     title: 'Ak&Ven',
@@ -132,7 +135,8 @@ export const featured: Featured[] = [
     cover: 'akven',
     description:
       "An online shop and admin dashboard for my family's business in Kyrgyzstan, built so my parents can add products, sections and photos without calling a developer. Local payments through MBank and Optima, an offline-first PWA, demand forecasting, and an AI bargaining assistant whose limits are enforced by the system instead of trusted to the model.",
-    tech: ['PWA', 'MBank & Optima', 'LLM agent', 'Forecasting'],
+    tech: ['Java 17', 'Spring Boot', 'PostgreSQL & pgvector', 'React PWA'],
+    github: 'https://github.com/nurmuhammedkanybekov/akven-v2',
   },
   {
     title: 'tdJamaat',
@@ -142,6 +146,8 @@ export const featured: Featured[] = [
       "A weekly progress dashboard for my community's 16-week season: houses log results across eight metrics, scored by role, and everyone can see the rankings. I rebuilt it from hand-edited JSON into a normalized Postgres schema where Row-Level Security decides who can write what, so there's no custom backend left to secure.",
     tech: ['React 19', 'TypeScript', 'Supabase', 'Postgres RLS'],
     github: 'https://github.com/nurmuhammedkanybekov/tdJamaat-v2',
+    live: 'https://tdjamaat.vercel.app/',
+    liveLabel: 'Live site',
   },
   {
     title: 'niraFinance',
@@ -177,6 +183,7 @@ export const projects: Project[] = [
     description:
       'Built in 24 hours: an AI platform that reads lesson PDFs in under five seconds and sorts student mistakes into three kinds of confusion.',
     tech: ['Python', 'FastAPI', 'Azure OpenAI'],
+    live: 'https://devpost.com/software/edupulse-aour1f',
   },
   {
     title: 'Portfolio Optimizer',
@@ -186,17 +193,11 @@ export const projects: Project[] = [
     github: 'https://github.com/nurmuhammedkanybekov/portfolio_optimization_system',
   },
   {
-    title: 'SQE',
+    title: 'Snake',
     description:
-      'A DevSecOps deployment blueprint: infrastructure as code on AWS, containerized services and security checks in the pipeline.',
-    tech: ['AWS', 'Terraform', 'Docker'],
-    github: 'https://github.com/nurmuhammedkanybekov/SQE',
-  },
-  {
-    title: 'Secure IAM & Audit API',
-    description:
-      'An identity and access API with JWT auth, role-based access control and audit logs correlated per request.',
-    tech: ['Java 17', 'Spring Boot', 'Docker'],
+      'A Java Swing snake game built around clean structure: MVC, a hand-written linked list for the snake body, a fixed 60 FPS loop and CSV high scores.',
+    tech: ['Java', 'Swing', 'Maven'],
+    github: 'https://github.com/nurmuhammedkanybekov/Snake-Game',
   },
   {
     title: 'movieDBMS',
@@ -204,6 +205,13 @@ export const projects: Project[] = [
       'A console app for a movie database with a normalized schema, constraint-checked deletes and query-based filtering.',
     tech: ['Java', 'JDBC', 'JUnit 5'],
     github: 'https://github.com/nurmuhammedkanybekov/movieDBMS',
+  },
+  {
+    title: 'Shiro',
+    description:
+      'The same Spring Boot service wired into three CI/CD setups, GitHub Actions, Jenkins and Tekton, plus a script that flags technical debt.',
+    tech: ['Java 17', 'Spring Boot', 'Docker'],
+    github: 'https://github.com/nurmuhammedkanybekov/shiro',
   },
 ];
 

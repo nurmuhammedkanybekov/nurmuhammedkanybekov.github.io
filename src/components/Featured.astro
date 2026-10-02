@@ -43,7 +43,7 @@ import { featured } from '../data/site';
                     {p.live && (
                       <a href={p.live} aria-label={`Open ${p.title}`} target="_blank" rel="noopener" class="cta">
                         <Icon name="external" size={20} />
-                        <span>Play it</span>
+                        <span>{p.liveLabel ?? 'Live'}</span>
                       </a>
                     )}
                   </div>
