@@ -1,0 +1,232 @@
+---
+// Code-drawn cover art for the featured projects.
+// Swap any of these for a real screenshot later: put the image in public/ and
+// set `image` on the project in src/data/site.ts (see README).
+interface Props {
+  kind: 'remnant' | 'akven' | 'tdjamaat' | 'nira';
+  title: string;
+}
+const { kind, title } = Astro.props;
+const uid = `c-${kind}`;
+---
+
+{
+  kind === 'remnant' && (
+    <svg viewBox="0 0 600 375" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" role="img" aria-label={`${title}: illustration of a flashlight beam in a mine tunnel`}>
+      <defs>
+        <radialGradient id={`${uid}-bg`} cx="50%" cy="46%" r="70%">
+          <stop offset="0" stop-color="#1c2230" />
+          <stop offset="0.55" stop-color="#0c0f16" />
+          <stop offset="1" stop-color="#050609" />
+        </radialGradient>
+        <linearGradient id={`${uid}-beam`} x1="0" y1="1" x2="0.15" y2="0">
+          <stop offset="0" stop-color="#f6d58a" stop-opacity="0.55" />
+          <stop offset="1" stop-color="#f6d58a" stop-opacity="0" />
+        </linearGradient>
+        <radialGradient id={`${uid}-eye`}>
+          <stop offset="0" stop-color="#ff4d3a" />
+          <stop offset="1" stop-color="#ff4d3a" stop-opacity="0" />
+        </radialGradient>
+      </defs>
+      <rect width="600" height="375" fill={`url(#${uid}-bg)`} />
+      <g fill="none" stroke="#3a3326" stroke-linejoin="round">
+        <path d="M40 375 V120 Q300 -20 560 120 V375" stroke-width="22" />
+        <path d="M120 375 V150 Q300 50 480 150 V375" stroke-width="15" opacity="0.85" />
+        <path d="M190 330 V178 Q300 110 410 178 V330" stroke-width="10" opacity="0.7" />
+        <path d="M240 290 V196 Q300 156 360 196 V290" stroke-width="6" opacity="0.55" />
+        <path d="M270 262 V208 Q300 186 330 208 V262" stroke-width="4" opacity="0.4" />
+      </g>
+      <g stroke="#4b4232" stroke-width="3" opacity="0.8">
+        <path d="M150 375 L288 250" />
+        <path d="M450 375 L312 250" />
+        <path d="M128 360 H472" opacity="0.6" />
+        <path d="M200 318 H400" opacity="0.5" />
+        <path d="M240 292 H360" opacity="0.4" />
+        <path d="M262 272 H338" opacity="0.3" />
+      </g>
+      <path d="M210 375 L268 200 L360 214 L420 375 Z" fill={`url(#${uid}-beam)`} />
+      <circle cx="292" cy="236" r="9" fill={`url(#${uid}-eye)`} />
+      <circle cx="310" cy="236" r="9" fill={`url(#${uid}-eye)`} />
+      <circle cx="292" cy="236" r="1.8" fill="#ffb3a8" />
+      <circle cx="310" cy="236" r="1.8" fill="#ffb3a8" />
+      <g font-family="JetBrains Mono Variable, monospace" fill="#f6d58a">
+        <text x="28" y="38" font-size="14" letter-spacing="4" opacity="0.85">REMNANT</text>
+        <text x="28" y="58" font-size="10" letter-spacing="1" opacity="0.5">LEVEL 07 · TIAN SHAN</text>
+      </g>
+      <g font-family="JetBrains Mono Variable, monospace" font-size="10" fill="#c9c3b5" opacity="0.6">
+        <rect x="470" y="28" width="102" height="6" rx="3" fill="#2a2a2a" />
+        <rect x="470" y="28" width="64" height="6" rx="3" fill="#d9534a" />
+        <rect x="470" y="42" width="102" height="6" rx="3" fill="#2a2a2a" />
+        <rect x="470" y="42" width="88" height="6" rx="3" fill="#6fb3d2" />
+      </g>
+    </svg>
+  )
+}
+
+{
+  kind === 'akven' && (
+    <svg viewBox="0 0 600 375" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" role="img" aria-label={`${title}: illustration of a white and gold online shop with a bargaining chat`}>
+      <defs>
+        <linearGradient id={`${uid}-gold`} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#d9b25f" />
+          <stop offset="1" stop-color="#a77b2c" />
+        </linearGradient>
+      </defs>
+      <rect width="600" height="375" fill="#f7f4ee" />
+      <rect x="0" y="0" width="600" height="54" fill="#ffffff" />
+      <path d="M0 54 H600" stroke="#ebe3d3" />
+      <text x="30" y="35" font-family="Georgia, serif" font-size="22" fill={`url(#${uid}-gold)`} letter-spacing="1">Ak&amp;Ven</text>
+      <g font-family="Inter Variable, sans-serif" font-size="11" fill="#7a7466">
+        <text x="330" y="32">Fabrics</text>
+        <text x="390" y="32">Home</text>
+        <text x="440" y="32">New</text>
+      </g>
+      <rect x="500" y="20" width="70" height="20" rx="10" fill="none" stroke={`url(#${uid}-gold)`} />
+      <text x="535" y="34" font-family="Inter Variable, sans-serif" font-size="10" fill="#a77b2c" text-anchor="middle">Cart · 2</text>
+
+      <g>
+        <rect x="30" y="78" width="120" height="150" rx="8" fill="#ffffff" stroke="#ece5d6" />
+        <rect x="40" y="88" width="100" height="90" rx="5" fill="#efe4cf" />
+        <path d="M40 160 Q90 120 140 150 V178 H40 Z" fill="#e2cfa6" />
+        <rect x="40" y="190" width="70" height="8" rx="4" fill="#d8d2c4" />
+        <text x="40" y="218" font-family="Inter Variable, sans-serif" font-size="12" font-weight="600" fill="#a77b2c">1 450 som</text>
+
+        <rect x="165" y="78" width="120" height="150" rx="8" fill="#ffffff" stroke="#ece5d6" />
+        <rect x="175" y="88" width="100" height="90" rx="5" fill="#e8ece6" />
+        <circle cx="225" cy="133" r="26" fill="#cfd8cc" />
+        <rect x="175" y="190" width="60" height="8" rx="4" fill="#d8d2c4" />
+        <text x="175" y="218" font-family="Inter Variable, sans-serif" font-size="12" font-weight="600" fill="#a77b2c">980 som</text>
+
+        <rect x="30" y="243" width="255" height="106" rx="8" fill="#ffffff" stroke="#ece5d6" />
+        <text x="46" y="268" font-family="Inter Variable, sans-serif" font-size="11" fill="#7a7466">Sales forecast · next 4 weeks</text>
+        <path d="M46 330 L90 318 L134 322 L178 300 L222 296 L266 278" fill="none" stroke={`url(#${uid}-gold)`} stroke-width="2.5" stroke-linecap="round" />
+        <path d="M178 300 L222 296 L266 278" fill="none" stroke="#a77b2c" stroke-width="2.5" stroke-dasharray="4 5" opacity="0.5" />
+      </g>
+
+      <g>
+        <rect x="310" y="78" width="262" height="271" rx="12" fill="#ffffff" stroke="#ece5d6" />
+        <circle cx="334" cy="102" r="10" fill={`url(#${uid}-gold)`} />
+        <text x="352" y="106" font-family="Inter Variable, sans-serif" font-size="12" font-weight="600" fill="#2b2822">Shop assistant</text>
+        <path d="M310 122 H572" stroke="#f0eadf" />
+        <rect x="380" y="138" width="176" height="44" rx="12" fill="#f3ead8" />
+        <text x="394" y="156" font-family="Inter Variable, sans-serif" font-size="11" fill="#4a4436">Can you do 1 200 som</text>
+        <text x="394" y="172" font-family="Inter Variable, sans-serif" font-size="11" fill="#4a4436">for the blue fabric?</text>
+        <rect x="326" y="196" width="196" height="60" rx="12" fill="#faf8f4" stroke="#ece5d6" />
+        <text x="340" y="215" font-family="Inter Variable, sans-serif" font-size="11" fill="#4a4436">Best I can do is 1 350 som,</text>
+        <text x="340" y="231" font-family="Inter Variable, sans-serif" font-size="11" fill="#4a4436">and delivery to Bishkek</text>
+        <text x="340" y="247" font-family="Inter Variable, sans-serif" font-size="11" fill="#4a4436">is on us.</text>
+        <rect x="326" y="270" width="96" height="22" rx="11" fill="none" stroke="#d9b25f" />
+        <text x="374" y="285" font-family="Inter Variable, sans-serif" font-size="10" fill="#a77b2c" text-anchor="middle">Accept offer</text>
+        <rect x="326" y="310" width="230" height="26" rx="13" fill="#f7f4ee" />
+        <text x="340" y="327" font-family="Inter Variable, sans-serif" font-size="10" fill="#aaa294">Type a message…</text>
+      </g>
+    </svg>
+  )
+}
+
+{
+  kind === 'tdjamaat' && (
+    <svg viewBox="0 0 600 375" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" role="img" aria-label={`${title}: illustration of a weekly rankings dashboard with colored house bars`}>
+      <rect width="600" height="375" fill="#10131c" />
+      <text x="28" y="40" font-family="Inter Variable, sans-serif" font-size="16" font-weight="700" fill="#f2f4f8">Week 9 standings</text>
+      <text x="28" y="60" font-family="JetBrains Mono Variable, monospace" font-size="10" fill="#7c8597">16-week season · 8 metrics</text>
+      <g font-family="Inter Variable, sans-serif" font-size="12">
+        <rect x="28" y="82" width="250" height="44" rx="10" fill="#1a1f2c" />
+        <circle cx="52" cy="104" r="10" fill="#ff8a3d" />
+        <text x="72" y="108" fill="#f2f4f8" font-weight="600">House Oak</text>
+        <text x="262" y="108" fill="#ffb37c" text-anchor="end" font-family="JetBrains Mono Variable, monospace">94%</text>
+
+        <rect x="28" y="134" width="250" height="44" rx="10" fill="#161a25" />
+        <circle cx="52" cy="156" r="10" fill="#4fd1a5" />
+        <text x="72" y="160" fill="#dfe3ea">House River</text>
+        <text x="262" y="160" fill="#86e3c3" text-anchor="end" font-family="JetBrains Mono Variable, monospace">88%</text>
+
+        <rect x="28" y="186" width="250" height="44" rx="10" fill="#161a25" />
+        <circle cx="52" cy="208" r="10" fill="#7c9cff" />
+        <text x="72" y="212" fill="#dfe3ea">House Peak</text>
+        <text x="262" y="212" fill="#a9bcff" text-anchor="end" font-family="JetBrains Mono Variable, monospace">81%</text>
+
+        <rect x="28" y="238" width="250" height="44" rx="10" fill="#161a25" />
+        <circle cx="52" cy="260" r="10" fill="#f06ba8" />
+        <text x="72" y="264" fill="#dfe3ea">House Dawn</text>
+        <text x="262" y="264" fill="#f6a1c8" text-anchor="end" font-family="JetBrains Mono Variable, monospace">76%</text>
+      </g>
+      <rect x="300" y="82" width="272" height="200" rx="12" fill="#161a25" />
+      <text x="318" y="106" font-family="Inter Variable, sans-serif" font-size="11" fill="#7c8597">Weekly score</text>
+      <g>
+        {[58, 70, 64, 82, 76, 88, 84, 94].map((h, i) => (
+          <rect x={322 + i * 30} y={262 - h * 1.4} width="18" height={h * 1.4} rx="4" fill={['#ff8a3d', '#4fd1a5', '#7c9cff', '#f06ba8'][i % 4]} opacity={0.55 + i * 0.05} />
+        ))}
+      </g>
+      <g font-family="JetBrains Mono Variable, monospace" font-size="10" fill="#7c8597">
+        <rect x="28" y="300" width="544" height="48" rx="10" fill="#161a25" />
+        <text x="46" y="329">pages read</text>
+        <rect x="130" y="320" width="120" height="8" rx="4" fill="#232a3a" />
+        <rect x="130" y="320" width="96" height="8" rx="4" fill="#4fd1a5" />
+        <text x="300" y="329">weekly targets</text>
+        <rect x="410" y="320" width="140" height="8" rx="4" fill="#232a3a" />
+        <rect x="410" y="320" width="118" height="8" rx="4" fill="#ff8a3d" />
+      </g>
+    </svg>
+  )
+}
+
+{
+  kind === 'nira' && (
+    <svg viewBox="0 0 600 375" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" role="img" aria-label={`${title}: illustration of a finance dashboard with a spending chart and a question answered in chat`}>
+      <defs>
+        <linearGradient id={`${uid}-area`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#5eead4" stop-opacity="0.35" />
+          <stop offset="1" stop-color="#5eead4" stop-opacity="0" />
+        </linearGradient>
+      </defs>
+      <rect width="600" height="375" fill="#0e1417" />
+      <rect x="0" y="0" width="64" height="375" fill="#121a1e" />
+      <circle cx="32" cy="34" r="12" fill="#5eead4" opacity="0.9" />
+      {[90, 130, 170, 210].map((y) => (
+        <rect x="22" y={y} width="20" height="20" rx="5" fill="#1b252a" />
+      ))}
+      <text x="88" y="40" font-family="Inter Variable, sans-serif" font-size="15" font-weight="700" fill="#e8f1f2">Spending · 2026</text>
+      <g font-family="JetBrains Mono Variable, monospace">
+        <rect x="88" y="58" width="150" height="58" rx="10" fill="#151e22" />
+        <text x="102" y="80" font-size="10" fill="#7f9196">This month</text>
+        <text x="102" y="102" font-size="17" fill="#e8f1f2">€612.40</text>
+        <rect x="248" y="58" width="150" height="58" rx="10" fill="#151e22" />
+        <text x="262" y="80" font-size="10" fill="#7f9196">Budget left</text>
+        <text x="262" y="102" font-size="17" fill="#5eead4">€187.60</text>
+      </g>
+      <rect x="88" y="130" width="310" height="218" rx="12" fill="#151e22" />
+      <path d="M104 300 L140 280 L176 290 L212 250 L248 262 L284 218 L320 232 L356 196 L382 206 L382 330 L104 330 Z" fill={`url(#${uid}-area)`} />
+      <path d="M104 300 L140 280 L176 290 L212 250 L248 262 L284 218 L320 232 L356 196 L382 206" fill="none" stroke="#5eead4" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" />
+      <g stroke="#1f2b30">
+        <path d="M104 170 H382" />
+        <path d="M104 220 H382" />
+        <path d="M104 270 H382" />
+      </g>
+      <rect x="414" y="58" width="164" height="290" rx="12" fill="#151e22" />
+      <text x="430" y="82" font-family="Inter Variable, sans-serif" font-size="11" font-weight="600" fill="#e8f1f2">Ask your finances</text>
+      <rect x="440" y="98" width="124" height="46" rx="10" fill="#1e3a3a" />
+      <g font-family="Inter Variable, sans-serif" font-size="10" fill="#d6f5ef">
+        <text x="450" y="116">How much on food</text>
+        <text x="450" y="132">in May?</text>
+      </g>
+      <rect x="428" y="156" width="136" height="76" rx="10" fill="#1b252a" />
+      <g font-family="Inter Variable, sans-serif" font-size="10" fill="#b9c7ca">
+        <text x="438" y="174">€214 across 19</text>
+        <text x="438" y="190">transactions, 12% up</text>
+        <text x="438" y="206">on April. Biggest:</text>
+        <text x="438" y="222">groceries, €131.</text>
+      </g>
+      <rect x="428" y="312" width="136" height="24" rx="12" fill="#1b252a" />
+      <circle cx="550" cy="324" r="7" fill="#5eead4" />
+    </svg>
+  )
+}
+
+<style>
+  svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+</style>

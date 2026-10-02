@@ -1,0 +1,101 @@
+---
+import Icon from './Icon.astro';
+import { site, socials } from '../data/site';
+---
+
+<div class="side side--left fade-in" style="--d:900ms">
+  <ul class="social-list">
+    {
+      socials.map(({ name, icon, url }) => (
+        <li>
+          <a href={url} aria-label={name} target={url.startsWith('mailto') ? undefined : '_blank'} rel="noopener">
+            <Icon name={icon as 'github'} size={20} />
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<div class="side side--right fade-in" style="--d:900ms">
+  <div class="email-wrap">
+    <a href={`mailto:${site.email}`}>{site.email}</a>
+  </div>
+</div>
+
+<style>
+  .side {
+    width: 40px;
+    position: fixed;
+    bottom: 0;
+    z-index: 10;
+    color: var(--text-strong);
+  }
+  .side--left {
+    left: 40px;
+    right: auto;
+  }
+  .side--right {
+    right: 40px;
+    left: auto;
+  }
+  @media (max-width: 1080px) {
+    .side--left {
+      left: 20px;
+    }
+    .side--right {
+      right: 20px;
+    }
+  }
+  @media (max-width: 768px) {
+    .side {
+      display: none;
+    }
+  }
+
+  .social-list,
+  .email-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .social-list::after,
+  .email-wrap::after {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 90px;
+    margin: 0 auto;
+    background-color: var(--text-strong);
+    opacity: 0.6;
+  }
+  .social-list li:last-of-type {
+    margin-bottom: 20px;
+  }
+  .social-list a {
+    display: block;
+    padding: 10px;
+  }
+  .social-list a:hover,
+  .social-list a:focus-visible {
+    transform: translateY(-3px);
+  }
+
+  .email-wrap a {
+    margin: 20px auto;
+    padding: 10px;
+    font-family: var(--font-mono);
+    font-size: var(--fz-xxs);
+    line-height: var(--fz-lg);
+    letter-spacing: 0.1em;
+    writing-mode: vertical-rl;
+  }
+  .email-wrap a:hover,
+  .email-wrap a:focus-visible {
+    transform: translateY(-3px);
+  }
+</style>

@@ -1,0 +1,61 @@
+---
+import Icon from './Icon.astro';
+import { site, socials } from '../data/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <ul class="footer-social">
+    {
+      socials.map(({ name, icon, url }) => (
+        <li>
+          <a href={url} aria-label={name} target={url.startsWith('mailto') ? undefined : '_blank'} rel="noopener">
+            <Icon name={icon as 'github'} size={20} />
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+  <p class="credit">
+    Designed &amp; built by {site.name} · {year}
+    <br />
+    Layout inspired by <a href="https://brittanychiang.com" target="_blank" rel="noopener">Brittany Chiang</a>
+  </p>
+</footer>
+
+<style>
+  .footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 70px;
+    padding: 15px;
+    text-align: center;
+  }
+  .footer-social {
+    display: none;
+    list-style: none;
+    gap: 10px;
+    margin-bottom: 10px;
+    color: var(--text-strong);
+  }
+  .footer-social a {
+    display: block;
+    padding: 10px;
+  }
+  @media (max-width: 768px) {
+    .footer-social {
+      display: flex;
+    }
+  }
+  .credit {
+    font-family: var(--font-mono);
+    font-size: var(--fz-xxs);
+    line-height: 1.8;
+    color: var(--text);
+  }
+  .credit a:hover {
+    color: var(--accent);
+  }
+</style>

@@ -1,0 +1,263 @@
+---
+import { jobs } from '../data/site';
+---
+
+<section id="jobs" class="jobs">
+  <h2 class="numbered-heading reveal">Where I've worked</h2>
+
+  <div class="inner reveal" data-tabs>
+    <div class="tab-list" role="tablist" aria-label="Experience">
+      {
+        jobs.map((job, i) => (
+          <button
+            class="tab"
+            role="tab"
+            id={`tab-${i}`}
+            aria-controls={`panel-${i}`}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            tabindex={i === 0 ? 0 : -1}
+            data-tab={i}
+          >
+            {job.tab}
+          </button>
+        ))
+      }
+      <div class="highlight" data-highlight aria-hidden="true"></div>
+    </div>
+
+    <div class="panels">
+      {
+        jobs.map((job, i) => (
+          <div class="panel" id={`panel-${i}`} role="tabpanel" tabindex="0" aria-labelledby={`tab-${i}`} hidden={i !== 0} data-panel={i}>
+            <h3>
+              <span>{job.title}</span>
+              <span class="company">
+                &nbsp;@&nbsp;
+                {job.url ? (
+                  <a href={job.url} class="inline-link" target="_blank" rel="noopener">
+                    {job.company}
+                  </a>
+                ) : (
+                  <span class="company-name">{job.company}</span>
+                )}
+              </span>
+            </h3>
+            <p class="range">{job.range}</p>
+            {job.note && <p class="note">{job.note}</p>}
+            <ul>
+              {job.points.map((p) => (
+                <li>{p}</li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-tabs]').forEach((root) => {
+    const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-tab]'));
+    const panels = Array.from(root.querySelectorAll<HTMLElement>('[data-panel]'));
+    const highlight = root.querySelector<HTMLElement>('[data-highlight]');
+    const list = root.querySelector<HTMLElement>('[role="tablist"]');
+
+    const select = (i: number, focus = false) => {
+      tabs.forEach((t, j) => {
+        const on = i === j;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+      });
+      panels.forEach((p, j) => (p.hidden = i !== j));
+      highlight?.style.setProperty('--i', String(i));
+      if (focus) tabs[i].focus();
+      // keep the active tab in view on the horizontal mobile list
+      if (list && list.scrollWidth > list.clientWidth) {
+        const t = tabs[i];
+        list.scrollTo({ left: t.offsetLeft - list.clientWidth / 2 + t.clientWidth / 2, behavior: 'smooth' });
+      }
+    };
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(i));
+      tab.addEventListener('keydown', (e) => {
+        const last = tabs.length - 1;
+        let next = -1;
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') next = i === last ? 0 : i + 1;
+        if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') next = i === 0 ? last : i - 1;
+        if (e.key === 'Home') next = 0;
+        if (e.key === 'End') next = last;
+        if (next >= 0) {
+          e.preventDefault();
+          select(next, true);
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  .jobs {
+    max-width: 760px;
+  }
+  .inner {
+    display: flex;
+  }
+  @media (max-width: 600px) {
+    .inner {
+      display: block;
+    }
+  }
+  .inner {
+    min-height: 340px;
+  }
+
+  .tab-list {
+    position: relative;
+    z-index: 3;
+    width: max-content;
+    padding: 0;
+    margin: 0;
+  }
+  @media (max-width: 600px) {
+    .tab-list {
+      display: flex;
+      overflow-x: auto;
+      width: calc(100% + 32px);
+      margin-left: -16px;
+      padding: 0 16px;
+      margin-bottom: 30px;
+      scrollbar-width: none;
+    }
+    .tab-list::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .tab {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 42px;
+    padding: 0 20px 2px;
+    border-left: 2px solid var(--border);
+    background-color: transparent;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: var(--fz-xs);
+    text-align: left;
+    white-space: nowrap;
+    transition: var(--transition);
+  }
+  .tab:hover,
+  .tab:focus-visible {
+    background-color: var(--accent-tint);
+    color: var(--accent);
+    outline-offset: -2px;
+  }
+  .tab[aria-selected='true'] {
+    color: var(--accent);
+  }
+  @media (max-width: 600px) {
+    .tab {
+      justify-content: center;
+      min-width: 130px;
+      padding: 0 15px;
+      border-left: 0;
+      border-bottom: 2px solid var(--border);
+      text-align: center;
+    }
+  }
+
+  .highlight {
+    --i: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    width: 2px;
+    height: 42px;
+    border-radius: 4px;
+    background: var(--accent);
+    transform: translateY(calc(var(--i) * 42px));
+    transition: transform 0.25s cubic-bezier(0.645, 0.045, 0.355, 1) 0.1s;
+  }
+  @media (max-width: 600px) {
+    .highlight {
+      top: auto;
+      bottom: 0;
+      width: 130px;
+      height: 2px;
+      margin-left: 16px;
+      transform: translateX(calc(var(--i) * 130px));
+    }
+  }
+
+  .panels {
+    position: relative;
+    width: 100%;
+    margin-left: 20px;
+  }
+  @media (max-width: 600px) {
+    .panels {
+      margin-left: 0;
+    }
+  }
+  .panel {
+    width: 100%;
+    height: auto;
+    padding: 10px 5px;
+    animation: panel-in 0.35s var(--ease);
+  }
+  .panel:focus-visible {
+    outline-offset: 0;
+  }
+  @keyframes panel-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+  }
+  h3 {
+    margin-bottom: 2px;
+    font-size: var(--fz-xxl);
+    font-weight: 500;
+    line-height: 1.3;
+  }
+  .company {
+    color: var(--accent);
+  }
+  .company-name {
+    color: var(--accent);
+  }
+  .range {
+    margin-bottom: 25px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: var(--fz-xs);
+  }
+  .note {
+    margin: -12px 0 20px;
+    font-size: var(--fz-md);
+    font-style: italic;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: var(--fz-lg);
+  }
+  li {
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+  li::before {
+    content: '▹';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+</style>

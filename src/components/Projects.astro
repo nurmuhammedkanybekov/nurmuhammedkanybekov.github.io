@@ -1,0 +1,194 @@
+---
+import Icon from './Icon.astro';
+import { projects, socials } from '../data/site';
+const github = socials.find((s) => s.icon === 'github')?.url;
+---
+
+<section class="others" aria-labelledby="others-title">
+  <h2 id="others-title" class="reveal">Other things I've built</h2>
+  <a class="archive-link inline-link reveal" href={github} target="_blank" rel="noopener">see everything on GitHub</a>
+
+  <ul class="grid">
+    {
+      projects.map((p, i) => {
+        const link = p.live || p.github;
+        return (
+          <li class="reveal" style={`--reveal-delay:${(i % 3) * 90}ms`}>
+            <div class="card">
+              <header>
+                <div class="top">
+                  <span class="folder">
+                    <Icon name="folder" size={36} />
+                  </span>
+                  <div class="links">
+                    {p.github && (
+                      <a href={p.github} aria-label={`${p.title} on GitHub`} target="_blank" rel="noopener">
+                        <Icon name="github" size={20} />
+                      </a>
+                    )}
+                    {p.live && (
+                      <a href={p.live} aria-label={`Open ${p.title}`} target="_blank" rel="noopener">
+                        <Icon name="external" size={20} />
+                      </a>
+                    )}
+                  </div>
+                </div>
+                <h3 class="title">
+                  {link ? (
+                    <a href={link} target="_blank" rel="noopener">
+                      {p.title}
+                    </a>
+                  ) : (
+                    p.title
+                  )}
+                </h3>
+                {p.badge && <p class="badge">{p.badge}</p>}
+                <p class="description">{p.description}</p>
+              </header>
+              <footer>
+                <ul class="tech">
+                  {p.tech.map((t) => (
+                    <li>{t}</li>
+                  ))}
+                </ul>
+              </footer>
+            </div>
+          </li>
+        );
+      })
+    }
+  </ul>
+</section>
+
+<style>
+  .others {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 40px;
+  }
+  h2 {
+    font-size: clamp(24px, 5vw, var(--fz-heading));
+    text-align: center;
+  }
+  .archive-link {
+    font-family: var(--font-mono);
+    font-size: var(--fz-sm);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-gap: 15px;
+    position: relative;
+    width: 100%;
+    margin-top: 50px;
+    list-style: none;
+    padding: 0;
+  }
+  @media (max-width: 1080px) {
+    .grid {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+  }
+  .grid > li {
+    position: relative;
+    cursor: default;
+  }
+  .card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    height: 100%;
+    padding: 2rem 1.75rem;
+    border-radius: var(--radius);
+    background-color: var(--bg-raised);
+    box-shadow: 0 10px 30px -15px var(--shadow);
+    transition: var(--transition);
+    overflow: auto;
+  }
+  .grid > li:hover .card,
+  .grid > li:focus-within .card {
+    transform: translateY(-7px);
+    box-shadow: 0 20px 30px -15px var(--shadow);
+  }
+  .grid > li:hover .title a,
+  .grid > li:focus-within .title a {
+    color: var(--accent);
+  }
+  header {
+    width: 100%;
+  }
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+  }
+  .folder {
+    color: var(--accent);
+  }
+  .folder :global(svg) {
+    stroke-width: 1.3;
+  }
+  .links {
+    display: flex;
+    align-items: center;
+    margin-right: -10px;
+    color: var(--text-strong);
+  }
+  .links a {
+    display: flex;
+    padding: 5px 7px;
+    position: relative;
+    z-index: 2;
+  }
+  .title {
+    margin: 0 0 10px;
+    color: var(--heading);
+    font-size: var(--fz-xxl);
+  }
+  .title a {
+    position: static;
+  }
+  .title a::before {
+    content: '';
+    display: block;
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+  }
+  .badge {
+    display: inline-block;
+    margin: 0 0 12px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background-color: var(--accent-tint);
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: var(--fz-xxs);
+  }
+  .description {
+    color: var(--text-strong);
+    font-size: 17px;
+    line-height: 1.55;
+  }
+  .tech {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    flex-grow: 1;
+    margin: 20px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .tech li {
+    font-family: var(--font-mono);
+    font-size: var(--fz-xxs);
+    line-height: 1.75;
+  }
+  .tech li:not(:last-of-type) {
+    margin-right: 15px;
+  }
+</style>

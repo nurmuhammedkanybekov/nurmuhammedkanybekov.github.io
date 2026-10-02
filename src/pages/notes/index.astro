@@ -1,0 +1,100 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const notes = (await getCollection('notes', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+const fmt = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+---
+
+<Base title="Notes · Nurmuhammed Kanybekov" description="Notes on things I've built, broken and learned.">
+  <section class="notes">
+    <h1 class="hero-item" style="--d:100ms">Notes</h1>
+    <p class="sub hero-item" style="--d:200ms">Write-ups on things I've built, broken and figured out.</p>
+
+    {
+      notes.length === 0 ? (
+        <p class="empty hero-item" style="--d:300ms">Nothing here yet. The first one is on its way.</p>
+      ) : (
+        <ul class="list">
+          {notes.map((n, i) => (
+            <li class="hero-item" style={`--d:${300 + i * 80}ms`}>
+              <a href={`/notes/${n.id}/`}>
+                <time datetime={n.data.date.toISOString()}>{fmt(n.data.date)}</time>
+                <span class="t">{n.data.title}</span>
+                <span class="d">{n.data.description}</span>
+                {n.data.tags.length > 0 && (
+                  <span class="tags">
+                    {n.data.tags.map((t) => (
+                      <span>#{t}</span>
+                    ))}
+                  </span>
+                )}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </section>
+</Base>
+
+<style>
+  .notes {
+    max-width: 760px;
+    padding-top: calc(var(--nav-height) + 60px);
+  }
+  h1 {
+    font-size: clamp(40px, 8vw, 64px);
+  }
+  .sub {
+    font-family: var(--font-mono);
+    font-size: var(--fz-sm);
+    color: var(--accent);
+    margin-bottom: 50px;
+  }
+  .empty {
+    font-size: var(--fz-lg);
+  }
+  .list {
+    list-style: none;
+  }
+  .list li {
+    border-top: 1px solid var(--border);
+  }
+  .list li:last-child {
+    border-bottom: 1px solid var(--border);
+  }
+  .list a {
+    display: grid;
+    gap: 6px;
+    padding: 26px 4px;
+  }
+  .list a:hover .t,
+  .list a:focus-visible .t {
+    color: var(--accent);
+  }
+  time,
+  .tags {
+    font-family: var(--font-mono);
+    font-size: var(--fz-xs);
+    color: var(--text);
+  }
+  .tags {
+    display: flex;
+    gap: 12px;
+    color: var(--accent);
+  }
+  .t {
+    color: var(--heading);
+    font-size: var(--fz-xxl);
+    font-weight: 600;
+    transition: var(--transition);
+  }
+  .d {
+    color: var(--text-strong);
+    font-size: var(--fz-md);
+    line-height: 1.5;
+  }
+</style>

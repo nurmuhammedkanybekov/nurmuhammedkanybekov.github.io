@@ -1,0 +1,62 @@
+---
+import { site, hero } from '../data/site';
+---
+
+<section class="hero" id="top">
+  <p class="hero-item greeting" style="--d:100ms">{hero.greeting}</p>
+  <h1 class="hero-item name" style="--d:200ms">{site.name}.</h1>
+  <h2 class="hero-item tagline" style="--d:300ms">{hero.tagline}</h2>
+  <p class="hero-item intro" style="--d:400ms">{hero.intro}</p>
+  <div class="hero-item actions" style="--d:500ms">
+    <a class="btn btn-lg" href="#projects">See what I've built</a>
+  </div>
+</section>
+
+<style>
+  .hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    min-height: 100svh;
+    padding: var(--nav-height) 0 0;
+  }
+  @media (max-height: 700px) and (min-width: 700px) {
+    .hero {
+      padding-bottom: 10vh;
+    }
+  }
+  .greeting {
+    margin: 0 0 30px 4px;
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: clamp(var(--fz-sm), 5vw, var(--fz-md));
+    font-weight: 400;
+  }
+  @media (max-width: 480px) {
+    .greeting {
+      margin: 0 0 20px 2px;
+    }
+  }
+  .name {
+    margin: 0;
+    font-size: clamp(38px, 7.2vw, 76px);
+    letter-spacing: -0.02em;
+  }
+  .tagline {
+    margin-top: 8px;
+    color: var(--text);
+    font-size: clamp(32px, 6.4vw, 68px);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+  }
+  .intro {
+    margin: 20px 0 0;
+    max-width: 560px;
+    line-height: 1.55;
+  }
+  .actions {
+    margin-top: 50px;
+  }
+</style>

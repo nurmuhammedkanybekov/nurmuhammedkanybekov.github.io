@@ -1,0 +1,202 @@
+---
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import Logo from './Logo.astro';
+import { site, about } from '../data/site';
+const hasPhoto = existsSync(join(process.cwd(), 'public', site.photoPath));
+---
+
+<section id="about" class="about">
+  <h2 class="numbered-heading reveal">About me</h2>
+  <div class="inner">
+    <div class="text reveal">
+      {about.paragraphs.map((p) => <p set:html={p} />)}
+      <p>{about.techIntro}</p>
+      <ul class="skills">
+        {about.tech.map((t) => <li>{t}</li>)}
+      </ul>
+      <div class="edu">
+        <p class="edu-label">Education</p>
+        <p class="edu-school">{about.education.school}</p>
+        <p class="edu-line">
+          {about.education.degree} · {about.education.range}
+        </p>
+        <p class="edu-line">{about.education.detail}</p>
+      </div>
+    </div>
+
+    <div class="pic reveal" style="--reveal-delay:120ms">
+      <div class="wrapper">
+        {
+          hasPhoto ? (
+            <img src={site.photoPath} width="300" height="300" alt={`Portrait of ${site.name}`} loading="lazy" decoding="async" />
+          ) : (
+            <div class="placeholder" role="img" aria-label={`${site.name} monogram`}>
+              <Logo size={120} />
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about {
+    max-width: 900px;
+  }
+  .inner {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 50px;
+  }
+  @media (max-width: 768px) {
+    .inner {
+      display: block;
+    }
+  }
+  .text {
+    line-height: 1.55;
+  }
+  .text :global(a) {
+    color: var(--accent);
+    background-image: linear-gradient(var(--accent-line), var(--accent-line));
+    background-size: 0 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.3s var(--ease);
+  }
+  .text :global(a:hover),
+  .text :global(a:focus-visible) {
+    background-size: 100% 1px;
+  }
+  .skills {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(140px, 220px));
+    gap: 0 10px;
+    padding: 0;
+    margin: 20px 0 0;
+    overflow: hidden;
+    list-style: none;
+  }
+  .skills li {
+    position: relative;
+    margin-bottom: 10px;
+    padding-left: 20px;
+    font-family: var(--font-mono);
+    font-size: var(--fz-xs);
+  }
+  .skills li::before {
+    content: '▹';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: var(--fz-sm);
+    line-height: 12px;
+    top: 3px;
+  }
+
+  .edu {
+    margin-top: 30px;
+    padding: 18px 20px;
+    border-left: 2px solid var(--accent);
+    background-color: var(--accent-tint);
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+  .edu p {
+    margin: 0;
+  }
+  .edu-label {
+    font-family: var(--font-mono);
+    font-size: var(--fz-xxs);
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px !important;
+  }
+  .edu-school {
+    color: var(--heading);
+    font-size: var(--fz-lg);
+    font-weight: 600;
+  }
+  .edu-line {
+    font-family: var(--font-mono);
+    font-size: var(--fz-xs);
+    margin-top: 4px !important;
+  }
+
+  .pic {
+    position: relative;
+    max-width: 300px;
+  }
+  @media (max-width: 768px) {
+    .pic {
+      margin: 50px auto 0;
+      width: 70%;
+    }
+  }
+  .wrapper {
+    display: block;
+    position: relative;
+    width: 100%;
+    border-radius: var(--radius);
+    background-color: var(--accent);
+    transition: var(--transition);
+  }
+  .wrapper img,
+  .placeholder {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: var(--radius);
+    mix-blend-mode: multiply;
+    filter: grayscale(100%) contrast(1);
+    transition: var(--transition);
+    object-fit: cover;
+  }
+  .placeholder {
+    display: grid;
+    place-items: center;
+    background: var(--bg-raised);
+    mix-blend-mode: normal;
+    filter: none;
+  }
+  .wrapper::before,
+  .wrapper::after {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--radius);
+    transition: var(--transition);
+  }
+  .wrapper::before {
+    top: 0;
+    left: 0;
+    z-index: 3;
+    background-color: var(--bg);
+    mix-blend-mode: screen;
+    opacity: 0.15;
+  }
+  .wrapper::after {
+    top: 20px;
+    left: 20px;
+    z-index: -1;
+    border: 2px solid var(--accent);
+  }
+  .wrapper:hover,
+  .pic:focus-within .wrapper {
+    transform: translate(-4px, -4px);
+  }
+  .wrapper:hover::after {
+    transform: translate(8px, 8px);
+  }
+  .wrapper:hover img {
+    filter: none;
+    mix-blend-mode: normal;
+  }
+  .wrapper:hover::before {
+    opacity: 0;
+  }
+</style>

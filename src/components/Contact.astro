@@ -1,0 +1,42 @@
+---
+import { site, contact } from '../data/site';
+---
+
+<section id="contact" class="contact">
+  <h2 class="overline reveal">04. {contact.overline}</h2>
+  <p class="title reveal">{contact.heading}</p>
+  <p class="text reveal">{contact.text}</p>
+  <a class="btn btn-lg reveal" href={`mailto:${site.email}`}>{contact.button}</a>
+</section>
+
+<style>
+  .contact {
+    max-width: 600px;
+    margin: 0 auto 100px;
+    text-align: center;
+  }
+  @media (max-width: 768px) {
+    .contact {
+      margin: 0 auto 50px;
+    }
+  }
+  .overline {
+    display: block;
+    margin-bottom: 20px;
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: var(--fz-md);
+    font-weight: 400;
+  }
+  .title {
+    margin: 0 0 10px;
+    color: var(--heading);
+    font-size: clamp(40px, 5vw, 60px);
+    font-weight: 600;
+    line-height: 1.1;
+  }
+  .text {
+    margin: 20px 0 50px;
+    line-height: 1.55;
+  }
+</style>

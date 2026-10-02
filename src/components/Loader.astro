@@ -1,0 +1,36 @@
+---
+import Logo from './Logo.astro';
+---
+
+<div class="loader" data-loader aria-hidden="true">
+  <div class="loader-logo">
+    <Logo size={96} animated />
+  </div>
+</div>
+
+<style>
+  .loader {
+    position: fixed;
+    inset: 0;
+    z-index: 99;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bg);
+  }
+  :global(html.show-loader) .loader {
+    display: flex;
+  }
+  :global(html.show-loader body.is-ready) .loader {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease 0.15s, visibility 0s linear 0.5s;
+  }
+  .loader-logo {
+    transition: transform 0.35s var(--ease), opacity 0.35s ease;
+  }
+  :global(html.show-loader body.is-ready) .loader-logo {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+</style>

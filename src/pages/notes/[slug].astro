@@ -1,0 +1,128 @@
+---
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const notes = await getCollection('notes', ({ data }) => !data.draft);
+  return notes.map((note) => ({ params: { slug: note.id }, props: { note } }));
+}
+
+const { note } = Astro.props;
+const { Content } = await render(note);
+const date = note.data.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<Base title={`${note.data.title} · Nurmuhammed Kanybekov`} description={note.data.description}>
+  <article class="post">
+    <a class="back hero-item" href="/notes/" style="--d:50ms"><Icon name="arrow" size={16} /> All notes</a>
+    <header class="hero-item" style="--d:120ms">
+      <h1>{note.data.title}</h1>
+      <p class="meta">
+        <time datetime={note.data.date.toISOString()}>{date}</time>
+        {note.data.tags.map((t) => <span>#{t}</span>)}
+      </p>
+    </header>
+    <div class="prose hero-item" style="--d:200ms">
+      <Content />
+    </div>
+  </article>
+</Base>
+
+<style>
+  .post {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: calc(var(--nav-height) + 50px) 0 100px;
+  }
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 30px;
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: var(--fz-sm);
+  }
+  h1 {
+    font-size: clamp(32px, 6vw, 50px);
+    letter-spacing: -0.015em;
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin: 16px 0 50px;
+    font-family: var(--font-mono);
+    font-size: var(--fz-xs);
+  }
+  .meta span {
+    color: var(--accent);
+  }
+
+  .prose {
+    font-size: var(--fz-lg);
+    line-height: 1.75;
+    color: var(--text-strong);
+  }
+  .prose :global(h2) {
+    margin: 2.2em 0 0.6em;
+    font-size: var(--fz-xxl);
+  }
+  .prose :global(h3) {
+    margin: 1.8em 0 0.5em;
+    font-size: var(--fz-xl);
+  }
+  .prose :global(p) {
+    margin: 0 0 1.2em;
+  }
+  .prose :global(a) {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-color: var(--accent-line);
+    text-underline-offset: 3px;
+  }
+  .prose :global(ul),
+  .prose :global(ol) {
+    padding-left: 1.3em;
+    margin: 0 0 1.2em;
+  }
+  .prose :global(li) {
+    margin-bottom: 0.4em;
+  }
+  .prose :global(blockquote) {
+    margin: 1.5em 0;
+    padding: 0.2em 0 0.2em 1.2em;
+    border-left: 2px solid var(--accent);
+    color: var(--text);
+    font-style: italic;
+  }
+  .prose :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+  }
+  .prose :global(:not(pre) > code) {
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    background-color: var(--bg-high);
+    color: var(--heading);
+  }
+  .prose :global(pre) {
+    margin: 1.5em 0;
+    padding: 18px 20px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    overflow-x: auto;
+    font-size: var(--fz-sm);
+    line-height: 1.6;
+  }
+  .prose :global(img) {
+    border-radius: var(--radius);
+    margin: 1.5em 0;
+  }
+  .prose :global(hr) {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 2.5em 0;
+  }
+</style>

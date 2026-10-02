@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Page not found · Nurmuhammed Kanybekov" description="This page doesn't exist.">
+  <section class="nf">
+    <p class="code">404</p>
+    <h1>This tunnel doesn't go anywhere.</h1>
+    <a class="btn btn-lg" href="/">Back to the surface</a>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+  }
+  .code {
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: clamp(100px, 25vw, 200px);
+    line-height: 1;
+    margin: 0;
+  }
+  h1 {
+    font-size: clamp(var(--fz-lg), 4vw, var(--fz-xxl));
+    font-weight: 400;
+    color: var(--text-strong);
+    margin: 10px 0 40px;
+  }
+</style>
