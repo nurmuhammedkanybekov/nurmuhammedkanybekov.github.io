@@ -6,7 +6,7 @@ export const site = {
   shortName: 'Nurmuhammed',
   initials: 'NK',
   url: 'https://nurmuhammedkanybekov.github.io',
-  title: 'Nurmuhammed Kanybekov · Software Engineer',
+  title: 'Nurmuhammed Kanybekov · Backend & Systems Engineer',
   description:
     'Nurmuhammed Kanybekov is a computer science student at ELTE in Budapest who builds backend and systems software in Java, Python, C and TypeScript.',
   email: 'nurmuhammedkanybekov4@gmail.com',
@@ -25,9 +25,9 @@ export const socials = [
 
 export const hero = {
   greeting: 'Hi, my name is',
-  tagline: 'I build software that holds up.',
+  role: 'Backend & Systems Engineer',
   intro:
-    "I'm a computer science student at ELTE in Budapest, originally from Kyrgyzstan. I work on the backend and below it: APIs, databases, access control, compilers and audio pipelines. I like problems that are a bit too hard for me, and I like shipping them.",
+    "I'm a computer science student at ELTE in Budapest, originally from Kyrgyzstan. I build software that holds up: APIs, databases, access control, compilers and audio pipelines. I like problems that are a bit too hard for me, and I like shipping them.",
 };
 
 const link = (href: string, text: string) => `<a href="${href}" target="_blank" rel="noopener">${text}</a>`;

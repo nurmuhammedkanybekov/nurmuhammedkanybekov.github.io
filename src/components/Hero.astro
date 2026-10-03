@@ -7,7 +7,7 @@ import { site, hero } from '../data/site';
   <div class="medallion" aria-hidden="true"><Ornament kind="medallion" class="draw" /></div>
   <p class="hero-item greeting" style="--d:100ms">{hero.greeting}</p>
   <h1 class="hero-item name" style="--d:200ms">{site.name}.</h1>
-  <h2 class="hero-item tagline" style="--d:300ms">{hero.tagline}</h2>
+  <p class="hero-item role" style="--d:300ms"><span class="role-rule" aria-hidden="true"></span>{hero.role}</p>
   <p class="hero-item intro" style="--d:400ms">{hero.intro}</p>
   <div class="hero-item actions" style="--d:500ms">
     <a class="btn btn-lg" href="#projects">See what I've built</a>
@@ -111,15 +111,33 @@ import { site, hero } from '../data/site';
     font-size: clamp(38px, 7.2vw, 76px);
     letter-spacing: -0.02em;
   }
-  .tagline {
-    margin-top: 8px;
-    color: var(--text);
-    font-size: clamp(32px, 6.4vw, 68px);
-    letter-spacing: -0.02em;
-    line-height: 1.05;
+  .role {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin: 18px 0 0 2px;
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: clamp(var(--fz-sm), 2.4vw, var(--fz-xl));
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .role-rule {
+    width: 48px;
+    height: 1px;
+    background-color: var(--accent);
+  }
+  @media (max-width: 480px) {
+    .role {
+      gap: 12px;
+      letter-spacing: 0.1em;
+    }
+    .role-rule {
+      width: 28px;
+    }
   }
   .intro {
-    margin: 20px 0 0;
+    margin: 30px 0 0;
     max-width: 560px;
     line-height: 1.55;
   }

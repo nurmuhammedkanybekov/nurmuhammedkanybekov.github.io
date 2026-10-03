@@ -17,6 +17,8 @@
   --accent-tint: rgba(226, 179, 86, 0.1);
   --accent-line: rgba(226, 179, 86, 0.35);
   --border: #1f2a37;
+  --selection-bg: #e2b356;
+  --selection-text: #0b1016;
   --cover-tint: rgba(11, 16, 22, 0.55);
 
   --font-serif: 'Source Serif 4 Variable', 'Times New Roman', Georgia, serif;
@@ -54,6 +56,8 @@
     --accent-tint: rgba(138, 92, 13, 0.08);
     --accent-line: rgba(138, 92, 13, 0.35);
     --border: #ddd6c6;
+    --selection-bg: #ead39f;
+    --selection-text: #141a21;
     --cover-tint: rgba(245, 242, 234, 0.35);
     color-scheme: light;
   }
@@ -70,6 +74,8 @@
   --accent-tint: rgba(138, 92, 13, 0.08);
   --accent-line: rgba(138, 92, 13, 0.35);
   --border: #ddd6c6;
+  --selection-bg: #ead39f;
+  --selection-text: #141a21;
   --cover-tint: rgba(245, 242, 234, 0.35);
   color-scheme: light;
 }
@@ -112,9 +118,10 @@ body.menu-open #content > * {
   pointer-events: none;
   user-select: none;
 }
+/* Solid, so overlapping line boxes in big headings don't stack into darker stripes. */
 ::selection {
-  background-color: var(--accent-line);
-  color: var(--heading);
+  background-color: var(--selection-bg);
+  color: var(--selection-text);
 }
 :focus-visible {
   outline: 2px dashed var(--accent);

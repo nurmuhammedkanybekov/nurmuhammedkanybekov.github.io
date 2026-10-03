@@ -1,7 +1,10 @@
 ---
 // Kyrgyz line ornaments, drawn in code so they stay sharp and follow the theme.
-// kochkor muuz (ram's horn) is the base motif; the medallion puts a tunduk
-// (the crown of the yurt, as on the flag) inside a ring of eight of them.
+//  - medallion: the sun from the Kyrgyz flag (40 straight rays) around a tunduk,
+//    the crown of the yurt, with two sets of four beams. Between them, ram's horns
+//    (kochkor muuz, prosperity) and small tumar triangles (amulets).
+//  - horn: one kochkor muuz pair.
+//  - divider: a shyrdak-style border of horn pairs, alternating up and down.
 // Color comes from `currentColor`, so set `color` on the element or a parent.
 interface Props {
   kind: 'medallion' | 'horn' | 'divider';
@@ -14,27 +17,34 @@ const { kind, class: className, size } = Astro.props;
 const horn = 'M100 150 L100 120 C100 90 115 70 140 68 C165 66 176 88 166 104 C158 117 140 114 140 102 C140 93 151 90 155 97';
 const hornMirror = 'translate(200 0) scale(-1 1)';
 
-const r2 = (n: number) => Math.round(n * 10) / 10;
+const r1 = (n: number) => Math.round(n * 10) / 10;
 const C = 200;
-const tunduk = [-22, 0, 22].flatMap((d) => {
-  const half = Math.sqrt(62 ** 2 - d ** 2);
-  const bow = d * 0.9;
+
+const rays = Array.from({ length: 40 }, (_, i) => {
+  const a = (i * 9 * Math.PI) / 180;
+  const [s, c] = [Math.sin(a), Math.cos(a)];
+  return `M${r1(C + 166 * s)} ${r1(C - 166 * c)} L${r1(C + 194 * s)} ${r1(C - 194 * c)}`;
+});
+
+const R = 58;
+const beams = [-33, -11, 11, 33].flatMap((d) => {
+  const half = Math.sqrt(R ** 2 - d ** 2);
+  const bow = d * 0.75;
   return [
-    `M${C + d} ${r2(C - half)} Q${r2(C + d + bow)} ${C} ${C + d} ${r2(C + half)}`,
-    `M${r2(C - half)} ${C + d} Q${C} ${r2(C + d + bow)} ${r2(C + half)} ${C + d}`,
+    `M${C + d} ${r1(C - half)} Q${r1(C + d + bow)} ${C} ${C + d} ${r1(C + half)}`,
+    `M${r1(C - half)} ${C + d} Q${C} ${r1(C + d + bow)} ${r1(C + half)} ${C + d}`,
   ];
 });
-const diamonds = Array.from({ length: 8 }, (_, i) => {
-  const deg = i * 45 + 22.5;
-  const a = (deg * Math.PI) / 180;
-  const x = r2(C + 158 * Math.sin(a));
-  const y = r2(C - 158 * Math.cos(a));
-  return { d: `M${x} ${r2(y - 7)} L${r2(x + 5)} ${y} L${x} ${r2(y + 7)} L${r2(x - 5)} ${y} Z`, t: `rotate(${deg} ${x} ${y})` };
-});
-const dots = Array.from({ length: 32 }, (_, i) => {
-  const a = (i * 2 * Math.PI) / 32;
-  return { x: r2(C + 180 * Math.sin(a)), y: r2(C - 180 * Math.cos(a)) };
-});
+
+// Horn pairs around the tunduk: large on the diagonals, small on the axes.
+const horns = Array.from({ length: 4 }, (_, i) => [
+  `rotate(${45 + i * 90} 200 200) translate(200 132) scale(0.55) translate(-100 -150)`,
+  `rotate(${i * 90} 200 200) translate(200 128) scale(0.42) translate(-100 -150)`,
+]).flat();
+const tumars = Array.from({ length: 8 }, (_, i) => `rotate(${i * 45 + 22.5} 200 200)`);
+
+// Divider border: horn pairs on a centre line, every other one flipped.
+const band = Array.from({ length: 5 }, (_, i) => `translate(${30 + i * 60} 40) scale(0.36 ${i % 2 ? -0.36 : 0.36}) translate(-100 -150)`);
 ---
 
 {
@@ -52,21 +62,19 @@ const dots = Array.from({ length: 32 }, (_, i) => {
       aria-hidden="true"
       focusable="false"
     >
-      <circle cx="200" cy="200" r="196" pathLength="1" />
-      <circle cx="200" cy="200" r="188" pathLength="1" />
-      <circle cx="200" cy="200" r="70" pathLength="1" />
-      <circle cx="200" cy="200" r="62" pathLength="1" />
-      {tunduk.map((d) => <path d={d} pathLength="1" />)}
-      {Array.from({ length: 8 }, (_, i) => (
-        <g transform={`rotate(${i * 45} 200 200) translate(200 124) scale(0.62) translate(-100 -150)`}>
+      {rays.map((d) => <path d={d} pathLength="1" />)}
+      <circle cx="200" cy="200" r="158" pathLength="1" />
+      <circle cx="200" cy="200" r="150" pathLength="1" />
+      <circle cx="200" cy="200" r={R + 8} pathLength="1" />
+      <circle cx="200" cy="200" r={R} pathLength="1" />
+      {beams.map((d) => <path d={d} pathLength="1" />)}
+      {horns.map((t) => (
+        <g transform={t}>
           <path d={horn} pathLength="1" />
           <path d={horn} transform={hornMirror} pathLength="1" />
         </g>
       ))}
-      {diamonds.map(({ d, t }) => <path d={d} transform={t} pathLength="1" />)}
-      <g fill="currentColor" stroke="none" class="ornament-dots">
-        {dots.map(({ x, y }) => <circle cx={x} cy={y} r="1.6" />)}
-      </g>
+      {tumars.map((t) => <path d="M200 66 L206 78 L194 78 Z" transform={t} pathLength="1" />)}
     </svg>
   )
 }
@@ -97,14 +105,14 @@ const dots = Array.from({ length: 32 }, (_, i) => {
   kind === 'divider' && (
     <div class:list={['ornament', 'ornament-divider', className]} aria-hidden="true">
       <span class="ornament-rule" />
-      <svg viewBox="0 0 200 60" width="120" height="36" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" focusable="false">
-        <path d="M22 30 L30 24 L38 30 L30 36 Z" fill="currentColor" stroke="none" />
-        <path d="M162 30 L170 24 L178 30 L170 36 Z" fill="currentColor" stroke="none" />
-        <g transform="translate(100 30) scale(0.42) translate(-100 -110)">
-          <path d={horn} />
-          <path d={horn} transform={hornMirror} />
-          <path d="M100 150 L110 162 L100 174 L90 162 Z" fill="currentColor" stroke="none" />
-        </g>
+      <svg viewBox="0 0 300 80" width="150" height="40" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+        <path d="M0 40 H300" stroke-width="1.6" />
+        {band.map((t) => (
+          <g transform={t}>
+            <path d={horn} />
+            <path d={horn} transform={hornMirror} />
+          </g>
+        ))}
       </svg>
       <span class="ornament-rule" />
     </div>
@@ -119,9 +127,8 @@ const dots = Array.from({ length: 32 }, (_, i) => {
   .ornament-divider {
     display: flex;
     align-items: center;
-    gap: 10px;
     width: 100%;
-    max-width: 420px;
+    max-width: 460px;
     margin: 0 auto;
   }
   .ornament-divider svg {
@@ -130,7 +137,8 @@ const dots = Array.from({ length: 32 }, (_, i) => {
   .ornament-rule {
     flex: 1;
     height: 1px;
-    background: linear-gradient(to var(--dir, right), transparent, var(--accent-line));
+    background: linear-gradient(to var(--dir, right), transparent, var(--accent));
+    opacity: 0.8;
   }
   .ornament-rule:last-child {
     --dir: left;
@@ -141,23 +149,13 @@ const dots = Array.from({ length: 32 }, (_, i) => {
     stroke-dasharray: 1;
     stroke-dashoffset: 1;
   }
-  :global(html.js) .ornament-medallion.draw .ornament-dots {
-    opacity: 0;
-  }
   :global(html.js body.is-ready) .ornament-medallion.draw :is(circle, path) {
     stroke-dashoffset: 0;
     transition: stroke-dashoffset 2.4s var(--ease) 0.4s;
   }
-  :global(html.js body.is-ready) .ornament-medallion.draw .ornament-dots {
-    opacity: 1;
-    transition: opacity 1.2s ease 2s;
-  }
   @media (prefers-reduced-motion: reduce) {
     :global(html.js) .ornament-medallion.draw :is(circle, path) {
       stroke-dashoffset: 0;
-    }
-    :global(html.js) .ornament-medallion.draw .ornament-dots {
-      opacity: 1;
     }
   }
 </style>
