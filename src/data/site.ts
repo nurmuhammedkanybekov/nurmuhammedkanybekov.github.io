@@ -27,17 +27,21 @@ export const hero = {
   greeting: 'Hi, my name is',
   tagline: 'I build software that holds up.',
   intro:
-    "I'm a computer science student at ELTE in Budapest, originally from Kyrgyzstan. I work mostly on the backend and below it: APIs, databases, compilers, audio pipelines. I like projects that are a bit too hard for me, and I like them finished.",
+    "I'm a computer science student at ELTE in Budapest, originally from Kyrgyzstan. I work on the backend and below it: APIs, databases, access control, compilers and audio pipelines. I like problems that are a bit too hard for me, and I like shipping them.",
 };
+
+const link = (href: string, text: string) => `<a href="${href}" target="_blank" rel="noopener">${text}</a>`;
 
 export const about = {
   paragraphs: [
-    "I grew up in Kyrgyzstan and came to Budapest to study computer science at <a href=\"https://www.elte.hu/en/\" target=\"_blank\" rel=\"noopener\">ELTE</a> on a Stipendium Hungaricum scholarship. Backend work is where I'm most at home: Java, Spring Boot, Postgres, and the boring-but-important parts like who is allowed to change what.",
-    "Most of what I build is for people I actually know. My thesis is an online shop for my parents' business back home. tdJamaat is a weekly tracker around 30 people in my community use, so if a score is wrong, someone notices. And when something sounds too hard, like a 3D game with no engine or a compiler in a day, that's usually why I start it.",
-    "Right now I'm a research assistant at ELTE, building audio pipelines that pick dog vocalizations out of 87+ hours of recordings. I also TA Data Structures & Algorithms and co-organize <a href=\"https://gdg.community.dev/gdg-budapest/\" target=\"_blank\" rel=\"noopener\">GDG Budapest</a>. Away from the keyboard I play chess (around 1600 FIDE), play volleyball, watch too many series, and read a lot. Game of Thrones is the big one: I know that world's history better than my own.",
+    `I came from Kyrgyzstan to study computer science at ${link('https://www.elte.hu/en/', 'ELTE')} on a Stipendium Hungaricum scholarship. I write Java and Spring Boot most days, with Python, C and TypeScript close behind, and the part I care about most is the one users never see: data models, who is allowed to change what, and code that still behaves when the input is hostile.`,
+    `My BSc thesis is ${link('https://github.com/nurmuhammedkanybekov/akven-v2', 'Ak&amp;Ven')}, a full e-commerce platform for my family's sock brand at Dordoi Bazaar in Bishkek, one of the largest markets in Central Asia. Bazaar customers expect to bargain, so the shop has an AI sales agent that negotiates price and bundles. The model is never allowed to set a price. It can only propose a discount, and a deterministic policy layer clamps that proposal to each product's margin floor, so no prompt can talk it into selling at a loss.`,
+    "At ELTE I'm a research assistant on a study of dog vocalizations. I build the audio pipeline that works through 87+ hours of recordings, separates dog sounds from human speech, and uses triangulation and echo cancellation to locate where each sound came from. I also teach Data Structures &amp; Algorithms, a role I was picked for from the top 5% of 200+ students.",
+    `Outside class I help run the developer community here. At GDG on Campus ELTE I went from team member to Technical &amp; Marketing Lead to Co-Lead, led a 40-person team and organized 12+ events for 950+ people. Since September 2026 I co-organize ${link('https://gdg.community.dev/gdg-budapest/', 'GDG Budapest')}, the city chapter.`,
+    'Away from the screen: chess (around 1600 FIDE), volleyball, good films and long series, and a lot of fantasy. Westeros is my favourite fictional world by a wide margin.',
   ],
-  techIntro: "Here's what I've been working with recently:",
-  tech: ['Java & Spring Boot', 'Python & FastAPI', 'C & LLVM', 'TypeScript & React', 'PostgreSQL & pgvector', 'Docker, AWS & Terraform'],
+  techIntro: "Here's what I work with most:",
+  tech: ['Java 21 & Spring Boot 3', 'Python & FastAPI', 'C & LLVM', 'TypeScript, React & Three.js', 'PostgreSQL & pgvector', 'Docker, AWS & Terraform'],
   education: {
     school: 'Eötvös Loránd University (ELTE)',
     degree: 'BSc in Computer Science',
@@ -47,58 +51,61 @@ export const about = {
 };
 
 export type Job = {
-  tab: string;
+  title: string;
   company: string;
   url?: string;
-  title: string;
   range: string;
-  note?: string;
+  current?: boolean;
+  summary: string;
+  // Role progression inside one organization, oldest first.
+  ladder?: { role: string; org: string }[];
+  // May contain <strong> for the numbers that matter.
   points: string[];
 };
 
 export const jobs: Job[] = [
   {
-    tab: 'ELTE Research',
+    title: 'Research Assistant',
     company: 'ELTE Faculty of Informatics',
     url: 'https://www.inf.elte.hu/en/',
-    title: 'Research Assistant',
     range: 'Sep 2026 – Present',
+    current: true,
+    summary: 'I build the audio side of a research project on dog vocalizations: turning long, noisy recordings into clean data the researchers can actually analyse.',
     points: [
-      'Build audio pipelines that separate dog vocalizations from human speech across 87+ hours of recordings.',
-      'Use triangulation and echo cancellation to localize sound sources and get cleaner signal out of recording sessions.',
-      "Work directly with the lab's principal investigator to keep the pipeline aligned with the research questions.",
+      'Built the pipeline that processes <strong>87+ hours</strong> of recordings and separates dog vocalizations from overlapping human speech.',
+      'Locate each sound source with triangulation across microphones, and use echo cancellation to remove room reflections before analysis.',
+      "Work directly with the lab's principal investigator, turning research questions into concrete pipeline requirements.",
     ],
   },
   {
-    tab: 'ELTE Teaching',
-    company: 'ELTE',
-    url: 'https://www.inf.elte.hu/en/',
     title: 'Teaching Assistant, Data Structures & Algorithms',
+    company: 'ELTE Faculty of Informatics',
+    url: 'https://www.inf.elte.hu/en/',
     range: 'Feb 2026 – Present',
+    current: true,
+    summary: 'Selected from the <strong>top 5%</strong> of 200+ peers to teach the practical side of the course.',
     points: [
-      'Selected from the top 5% of 200+ peers to run weekly consultations for 40+ students on graph theory and dynamic programming.',
-      'Reviewed 150+ practical submissions and ran technical evaluations of their algorithm design.',
+      'Run weekly consultations for <strong>40+ students</strong> on graph algorithms and dynamic programming.',
+      'Reviewed <strong>150+ practical submissions</strong>, grading both correctness and the design of the algorithm behind it.',
     ],
   },
   {
-    tab: 'GDG Budapest',
-    company: 'Google Developer Groups Budapest',
+    title: 'Co-Organizer, GDG Budapest',
+    company: 'Google Developer Groups',
     url: 'https://gdg.community.dev/gdg-budapest/',
-    title: 'Co-Organizer',
-    range: 'Sep 2026 – Present',
-    points: [
-      "Moved up to city-chapter leadership, helping plan technical programming for Budapest's developer community.",
+    range: 'Dec 2024 – Present',
+    current: true,
+    summary: 'Almost two years of building the developer community, first at ELTE and now for the whole city.',
+    ladder: [
+      { role: 'Team Member', org: 'GDG on Campus ELTE' },
+      { role: 'Technical & Marketing Lead', org: 'GDG on Campus ELTE' },
+      { role: 'Co-Lead', org: 'GDG on Campus ELTE' },
+      { role: 'Co-Organizer', org: 'GDG Budapest' },
     ],
-  },
-  {
-    tab: 'GDG on Campus',
-    company: 'GDG on Campus ELTE',
-    title: 'Co-Lead',
-    range: 'Dec 2024 – Sep 2026',
-    note: 'Joined as a Team Member, then Technical & Marketing Lead, then Co-Lead: almost two years in total.',
     points: [
-      'Co-led a 40-person team through a platform and content overhaul: 25% more traffic and 1M+ views.',
-      'Organized 12+ tech events for 950+ attendees, handling speakers, live demos and logistics.',
+      'Co-led a <strong>40-person team</strong> through a full platform and content overhaul that brought <strong>25% more traffic</strong> and <strong>1M+ views</strong>.',
+      'Organized <strong>12+ technical events</strong> for <strong>950+ attendees</strong>, from booking speakers to running live demos and the logistics on the day.',
+      "Since Sep 2026, co-organize GDG Budapest and help plan the technical program for the city's developer community.",
     ],
   },
 ];
@@ -107,7 +114,7 @@ export type Featured = {
   title: string;
   overline: string;
   cover: 'remnant' | 'akven' | 'tdjamaat' | 'nira';
-  // Optional real screenshot, e.g. '/remnant-cover.jpg' in public/. Replaces the SVG cover when set.
+  // Optional real screenshot in public/. Replaces the SVG cover when set.
   image?: string;
   description: string;
   tech: string[];
@@ -119,12 +126,12 @@ export type Featured = {
 export const featured: Featured[] = [
   {
     title: 'Remnant',
-    overline: 'Featured project',
+    overline: 'Featured project · playable in the browser',
     cover: 'remnant',
+    image: '/remnant-cover.webp',
     description:
-      "A co-op survival horror game set in an abandoned Soviet mine under the Tian Shan. I wrote all of it in TypeScript and Three.js with no game engine: rendering, physics, creature AI that hunts by sound, 3D audio, and WebRTC multiplayer with relay fallback. Ten levels, nine creature types, 196 tests, zero downloads.",
+      'A co-op survival horror game set in an abandoned Soviet mine under the Tian Shan. I wrote all of it in TypeScript and Three.js with no game engine: rendering, physics, creature AI that hunts by sound, 3D audio, and WebRTC co-op for two or three players with built-in voice chat. Ten levels, nine creature types, cloud saves, a leaderboard and 248 unit tests. Nothing to download.',
     tech: ['TypeScript', 'Three.js', 'WebRTC', 'Web Audio'],
-    image: '/remnant-cover.jpg',
     github: 'https://github.com/nurmuhammedkanybekov/remnant',
     live: 'https://nurmuhammedkanybekov.github.io/remnant',
     liveLabel: 'Play it',
@@ -134,14 +141,15 @@ export const featured: Featured[] = [
     overline: 'BSc thesis · in progress',
     cover: 'akven',
     description:
-      "An online shop and admin dashboard for my family's business in Kyrgyzstan, built so my parents can add products, sections and photos without calling a developer. Local payments through MBank and Optima, an offline-first PWA, demand forecasting, and an AI bargaining assistant whose limits are enforced by the system instead of trusted to the model.",
-    tech: ['Java 17', 'Spring Boot', 'PostgreSQL & pgvector', 'React PWA'],
+      "An e-commerce platform for my family's sock brand at Dordoi Bazaar in Bishkek. Its AI sales agent bargains over price and bundles the way bazaar customers expect, but it never sets a price itself: a deterministic PolicyValidator clamps every offer to the product's margin floor, so prompt injection can't sell anything at a loss. JWT auth with customer, staff and admin roles, an audit log of every change, and an installable PWA.",
+    tech: ['Java 17', 'Spring Boot 3', 'PostgreSQL & pgvector', 'React PWA'],
     github: 'https://github.com/nurmuhammedkanybekov/akven-v2',
   },
   {
     title: 'tdJamaat',
     overline: 'Live · ~30 weekly users',
     cover: 'tdjamaat',
+    image: '/tdjamaat-cover.webp',
     description:
       "A weekly progress dashboard for my community's 16-week season: houses log results across eight metrics, scored by role, and everyone can see the rankings. I rebuilt it from hand-edited JSON into a normalized Postgres schema where Row-Level Security decides who can write what, so there's no custom backend left to secure.",
     tech: ['React 19', 'TypeScript', 'Supabase', 'Postgres RLS'],
@@ -154,7 +162,7 @@ export const featured: Featured[] = [
     overline: 'Full-stack · solo',
     cover: 'nira',
     description:
-      "A personal finance app you can ask questions in plain language. Transactions get embedded into pgvector, so answers come from your own history, not guesses. CSV import from bank exports, budgets, portfolio tracking, and an ownership check on every endpoint that changes data.",
+      'A personal finance app you can ask questions in plain language. Transactions get embedded into pgvector, so answers come from your own history, not guesses. CSV import from bank exports, budgets, portfolio tracking, and an ownership check on every endpoint that changes data.',
     tech: ['Java 21', 'Spring Boot 3', 'pgvector', 'Next.js 14'],
     github: 'https://github.com/nurmuhammedkanybekov/niraFinance',
   },

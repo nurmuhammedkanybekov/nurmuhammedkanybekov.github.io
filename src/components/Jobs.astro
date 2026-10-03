@@ -3,261 +3,289 @@ import { jobs } from '../data/site';
 ---
 
 <section id="jobs" class="jobs">
-  <h2 class="numbered-heading reveal">Where I've worked</h2>
+  <h2 class="numbered-heading reveal">Experience</h2>
 
-  <div class="inner reveal" data-tabs>
-    <div class="tab-list" role="tablist" aria-label="Experience">
-      {
-        jobs.map((job, i) => (
-          <button
-            class="tab"
-            role="tab"
-            id={`tab-${i}`}
-            aria-controls={`panel-${i}`}
-            aria-selected={i === 0 ? 'true' : 'false'}
-            tabindex={i === 0 ? 0 : -1}
-            data-tab={i}
-          >
-            {job.tab}
-          </button>
-        ))
-      }
-      <div class="highlight" data-highlight aria-hidden="true"></div>
-    </div>
-
-    <div class="panels">
-      {
-        jobs.map((job, i) => (
-          <div class="panel" id={`panel-${i}`} role="tabpanel" tabindex="0" aria-labelledby={`tab-${i}`} hidden={i !== 0} data-panel={i}>
-            <h3>
-              <span>{job.title}</span>
-              <span class="company">
-                &nbsp;@&nbsp;
-                {job.url ? (
-                  <a href={job.url} class="inline-link" target="_blank" rel="noopener">
-                    {job.company}
-                  </a>
-                ) : (
-                  <span class="company-name">{job.company}</span>
-                )}
-              </span>
-            </h3>
-            <p class="range">{job.range}</p>
-            {job.note && <p class="note">{job.note}</p>}
-            <ul>
+  <ol class="timeline">
+    {
+      jobs.map((job, i) => (
+        <li class:list={['entry', 'reveal', { current: job.current }]} style={`--reveal-delay:${i * 60}ms`}>
+          <div class="when">
+            <span class="range">{job.range}</span>
+          </div>
+          <div class="body">
+            <span class="marker" aria-hidden="true" />
+            <h3 class="title">{job.title}</h3>
+            <p class="org">
+              {job.url ? (
+                <a href={job.url} target="_blank" rel="noopener">
+                  {job.company}
+                </a>
+              ) : (
+                job.company
+              )}
+            </p>
+            <p class="summary" set:html={job.summary} />
+            {job.ladder && (
+              <ol class="ladder" aria-label="Roles, in order">
+                {job.ladder.map((step) => (
+                  <li>
+                    <span class="step-role">{step.role}</span>
+                    <span class="step-org">{step.org}</span>
+                  </li>
+                ))}
+              </ol>
+            )}
+            <ul class="points">
               {job.points.map((p) => (
-                <li>{p}</li>
+                <li set:html={p} />
               ))}
             </ul>
           </div>
-        ))
-      }
-    </div>
-  </div>
+        </li>
+      ))
+    }
+  </ol>
 </section>
-
-<script>
-  document.querySelectorAll<HTMLElement>('[data-tabs]').forEach((root) => {
-    const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-tab]'));
-    const panels = Array.from(root.querySelectorAll<HTMLElement>('[data-panel]'));
-    const highlight = root.querySelector<HTMLElement>('[data-highlight]');
-    const list = root.querySelector<HTMLElement>('[role="tablist"]');
-
-    const select = (i: number, focus = false) => {
-      tabs.forEach((t, j) => {
-        const on = i === j;
-        t.setAttribute('aria-selected', String(on));
-        t.tabIndex = on ? 0 : -1;
-      });
-      panels.forEach((p, j) => (p.hidden = i !== j));
-      highlight?.style.setProperty('--i', String(i));
-      if (focus) tabs[i].focus();
-      // keep the active tab in view on the horizontal mobile list
-      if (list && list.scrollWidth > list.clientWidth) {
-        const t = tabs[i];
-        list.scrollTo({ left: t.offsetLeft - list.clientWidth / 2 + t.clientWidth / 2, behavior: 'smooth' });
-      }
-    };
-
-    tabs.forEach((tab, i) => {
-      tab.addEventListener('click', () => select(i));
-      tab.addEventListener('keydown', (e) => {
-        const last = tabs.length - 1;
-        let next = -1;
-        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') next = i === last ? 0 : i + 1;
-        if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') next = i === 0 ? last : i - 1;
-        if (e.key === 'Home') next = 0;
-        if (e.key === 'End') next = last;
-        if (next >= 0) {
-          e.preventDefault();
-          select(next, true);
-        }
-      });
-    });
-  });
-</script>
 
 <style>
   .jobs {
-    max-width: 760px;
+    max-width: 900px;
   }
-  .inner {
-    display: flex;
-  }
-  @media (max-width: 600px) {
-    .inner {
-      display: block;
-    }
-  }
-  .inner {
-    min-height: 340px;
-  }
-
-  .tab-list {
-    position: relative;
-    z-index: 3;
-    width: max-content;
-    padding: 0;
+  .timeline {
+    list-style: none;
     margin: 0;
+    padding: 0;
   }
-  @media (max-width: 600px) {
-    .tab-list {
-      display: flex;
-      overflow-x: auto;
-      width: calc(100% + 32px);
-      margin-left: -16px;
-      padding: 0 16px;
-      margin-bottom: 30px;
-      scrollbar-width: none;
-    }
-    .tab-list::-webkit-scrollbar {
-      display: none;
+  .entry {
+    display: grid;
+    grid-template-columns: 170px 1fr;
+  }
+  @media (max-width: 768px) {
+    .entry {
+      grid-template-columns: 1fr;
     }
   }
 
-  .tab {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: 42px;
-    padding: 0 20px 2px;
-    border-left: 2px solid var(--border);
-    background-color: transparent;
-    color: var(--text);
-    font-family: var(--font-mono);
-    font-size: var(--fz-xs);
-    text-align: left;
-    white-space: nowrap;
-    transition: var(--transition);
-  }
-  .tab:hover,
-  .tab:focus-visible {
-    background-color: var(--accent-tint);
-    color: var(--accent);
-    outline-offset: -2px;
-  }
-  .tab[aria-selected='true'] {
-    color: var(--accent);
-  }
-  @media (max-width: 600px) {
-    .tab {
-      justify-content: center;
-      min-width: 130px;
-      padding: 0 15px;
-      border-left: 0;
-      border-bottom: 2px solid var(--border);
-      text-align: center;
-    }
-  }
-
-  .highlight {
-    --i: 0;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 10;
-    width: 2px;
-    height: 42px;
-    border-radius: 4px;
-    background: var(--accent);
-    transform: translateY(calc(var(--i) * 42px));
-    transition: transform 0.25s cubic-bezier(0.645, 0.045, 0.355, 1) 0.1s;
-  }
-  @media (max-width: 600px) {
-    .highlight {
-      top: auto;
-      bottom: 0;
-      width: 130px;
-      height: 2px;
-      margin-left: 16px;
-      transform: translateX(calc(var(--i) * 130px));
-    }
-  }
-
-  .panels {
-    position: relative;
-    width: 100%;
-    margin-left: 20px;
-  }
-  @media (max-width: 600px) {
-    .panels {
-      margin-left: 0;
-    }
-  }
-  .panel {
-    width: 100%;
-    height: auto;
-    padding: 10px 5px;
-    animation: panel-in 0.35s var(--ease);
-  }
-  .panel:focus-visible {
-    outline-offset: 0;
-  }
-  @keyframes panel-in {
-    from {
-      opacity: 0;
-      transform: translateY(6px);
-    }
-  }
-  h3 {
-    margin-bottom: 2px;
-    font-size: var(--fz-xxl);
-    font-weight: 500;
-    line-height: 1.3;
-  }
-  .company {
-    color: var(--accent);
-  }
-  .company-name {
-    color: var(--accent);
+  .when {
+    padding: 6px 28px 0 0;
+    text-align: right;
   }
   .range {
-    margin-bottom: 25px;
     color: var(--text);
     font-family: var(--font-mono);
     font-size: var(--fz-xs);
+    line-height: 1.6;
+    white-space: nowrap;
   }
-  .note {
-    margin: -12px 0 20px;
-    font-size: var(--fz-md);
+  .current .range {
+    color: var(--accent);
+  }
+  @media (max-width: 768px) {
+    .when {
+      order: 2;
+      padding: 0 0 0 30px;
+      text-align: left;
+    }
+  }
+
+  .body {
+    position: relative;
+    padding: 0 0 56px 36px;
+    border-left: 1px solid var(--border);
+  }
+  .entry:last-child .body {
+    padding-bottom: 0;
+    border-image: linear-gradient(to bottom, var(--border) 60%, transparent) 1;
+  }
+  @media (max-width: 768px) {
+    .body {
+      display: contents;
+    }
+  }
+
+  /* Diamond marker on the line: filled for current roles. */
+  .marker {
+    position: absolute;
+    top: 9px;
+    left: -6px;
+    width: 11px;
+    height: 11px;
+    border: 1px solid var(--accent);
+    background-color: var(--bg);
+    transform: rotate(45deg);
+  }
+  .current .marker {
+    background-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-tint);
+  }
+
+  .title {
+    margin: 0;
+    font-size: var(--fz-xxl);
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .org {
+    margin: 2px 0 14px;
+    color: var(--accent);
+    font-size: var(--fz-lg);
     font-style: italic;
   }
-  ul {
+  .org a:hover,
+  .org a:focus-visible {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+  }
+  .summary {
+    margin: 0 0 16px;
+    color: var(--text-strong);
+    font-size: var(--fz-lg);
+    line-height: 1.55;
+  }
+
+  /* Role progression: a small stepper with diamond nodes on a gold line. */
+  .ladder {
+    display: grid;
+    grid-auto-columns: 1fr;
+    grid-auto-flow: column;
     list-style: none;
+    margin: 4px 0 22px;
     padding: 0;
+  }
+  .ladder li {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 22px 14px 0 0;
+  }
+  .ladder li::before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 0;
+    width: 9px;
+    height: 9px;
+    border: 1px solid var(--accent);
+    background-color: var(--bg);
+    transform: rotate(45deg);
+    z-index: 1;
+  }
+  .ladder li:last-child::before {
+    background-color: var(--accent);
+  }
+  .ladder li:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 14px;
+    right: 4px;
+    height: 1px;
+    background: linear-gradient(to right, var(--accent-line), var(--accent));
+  }
+  .step-role {
+    color: var(--heading);
+    font-size: var(--fz-md);
+    font-weight: 600;
+    line-height: 1.25;
+  }
+  .ladder li:not(:last-child) .step-role {
+    color: var(--text-strong);
+    font-weight: 500;
+  }
+  .step-org {
+    margin-top: 4px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: var(--fz-xxs);
+    line-height: 1.4;
+  }
+  @media (max-width: 600px) {
+    .ladder {
+      grid-auto-flow: row;
+      gap: 14px;
+    }
+    .ladder li {
+      padding: 0 0 0 26px;
+    }
+    .ladder li::before {
+      top: 5px;
+    }
+    .ladder li:not(:last-child)::after {
+      top: 16px;
+      left: 5px;
+      right: auto;
+      bottom: -12px;
+      width: 1px;
+      height: auto;
+      background: linear-gradient(to bottom, var(--accent-line), var(--accent));
+    }
+  }
+
+  .points {
+    list-style: none;
     margin: 0;
+    padding: 0;
     font-size: var(--fz-lg);
   }
-  li {
+  .points li {
     position: relative;
-    padding-left: 30px;
+    padding-left: 22px;
     margin-bottom: 10px;
-    line-height: 1.5;
+    line-height: 1.55;
   }
-  li::before {
-    content: '▹';
+  .points li::before {
+    content: '';
     position: absolute;
-    left: 0;
-    color: var(--accent);
+    left: 2px;
+    top: 0.62em;
+    width: 6px;
+    height: 6px;
+    background-color: var(--accent);
+    transform: rotate(45deg);
+  }
+  .points :global(strong),
+  .summary :global(strong) {
+    color: var(--heading);
+    font-weight: 600;
+  }
+
+  /* Phone: one column, with the line and markers running down the left. */
+  @media (max-width: 768px) {
+    .entry {
+      position: relative;
+      padding: 0 0 44px 30px;
+      border-left: 1px solid var(--border);
+    }
+    .entry:last-child {
+      padding-bottom: 0;
+      border-image: linear-gradient(to bottom, var(--border) 60%, transparent) 1;
+    }
+    .when {
+      padding: 0;
+      margin: 0 0 10px;
+    }
+    .marker {
+      left: -6px;
+      top: 9px;
+    }
+    .title {
+      order: 1;
+    }
+    .entry > .when {
+      order: 2;
+    }
+    .org {
+      order: 3;
+    }
+    .summary {
+      order: 4;
+    }
+    .ladder {
+      order: 5;
+    }
+    .points {
+      order: 6;
+    }
   }
 </style>

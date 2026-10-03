@@ -29,7 +29,7 @@ const hasPhoto = existsSync(join(process.cwd(), 'public', site.photoPath));
       <div class="wrapper">
         {
           hasPhoto ? (
-            <img src={site.photoPath} width="300" height="300" alt={`Portrait of ${site.name}`} loading="lazy" decoding="async" />
+            <img src={site.photoPath} width="640" height="640" alt={`Portrait of ${site.name}`} loading="lazy" decoding="async" />
           ) : (
             <div class="placeholder" role="img" aria-label={`${site.name} monogram`}>
               <Logo size={120} />
@@ -87,13 +87,14 @@ const hasPhoto = existsSync(join(process.cwd(), 'public', site.photoPath));
     font-size: var(--fz-xs);
   }
   .skills li::before {
-    content: '▹';
+    content: '';
     position: absolute;
-    left: 0;
-    color: var(--accent);
-    font-size: var(--fz-sm);
-    line-height: 12px;
-    top: 3px;
+    left: 2px;
+    top: 6px;
+    width: 5px;
+    height: 5px;
+    background-color: var(--accent);
+    transform: rotate(45deg);
   }
 
   .edu {
@@ -129,6 +130,13 @@ const hasPhoto = existsSync(join(process.cwd(), 'public', site.photoPath));
     position: relative;
     max-width: 300px;
   }
+  @media (min-width: 769px) {
+    .pic {
+      position: sticky;
+      top: 120px;
+      align-self: start;
+    }
+  }
   @media (max-width: 768px) {
     .pic {
       margin: 50px auto 0;
@@ -140,17 +148,17 @@ const hasPhoto = existsSync(join(process.cwd(), 'public', site.photoPath));
     position: relative;
     width: 100%;
     border-radius: var(--radius);
-    background-color: var(--accent);
+    background-color: var(--bg-raised);
     transition: var(--transition);
   }
   .wrapper img,
   .placeholder {
     position: relative;
     width: 100%;
+    height: auto;
     aspect-ratio: 1;
     border-radius: var(--radius);
-    mix-blend-mode: multiply;
-    filter: grayscale(100%) contrast(1);
+    filter: saturate(0.85) brightness(0.95);
     transition: var(--transition);
     object-fit: cover;
   }
@@ -175,9 +183,9 @@ const hasPhoto = existsSync(join(process.cwd(), 'public', site.photoPath));
     top: 0;
     left: 0;
     z-index: 3;
-    background-color: var(--bg);
-    mix-blend-mode: screen;
-    opacity: 0.15;
+    background-color: var(--accent);
+    mix-blend-mode: soft-light;
+    opacity: 0.25;
   }
   .wrapper::after {
     top: 20px;
@@ -194,7 +202,6 @@ const hasPhoto = existsSync(join(process.cwd(), 'public', site.photoPath));
   }
   .wrapper:hover img {
     filter: none;
-    mix-blend-mode: normal;
   }
   .wrapper:hover::before {
     opacity: 0;

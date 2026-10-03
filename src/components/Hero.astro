@@ -1,8 +1,10 @@
 ---
+import Ornament from './Ornament.astro';
 import { site, hero } from '../data/site';
 ---
 
 <section class="hero" id="top">
+  <div class="medallion" aria-hidden="true"><Ornament kind="medallion" class="draw" /></div>
   <p class="hero-item greeting" style="--d:100ms">{hero.greeting}</p>
   <h1 class="hero-item name" style="--d:200ms">{site.name}.</h1>
   <h2 class="hero-item tagline" style="--d:300ms">{hero.tagline}</h2>
@@ -14,6 +16,7 @@ import { site, hero } from '../data/site';
 
 <style>
   .hero {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -27,6 +30,38 @@ import { site, hero } from '../data/site';
       padding-bottom: 10vh;
     }
   }
+  .hero > :not(.medallion) {
+    position: relative;
+    z-index: 1;
+  }
+  .medallion {
+    position: absolute;
+    top: 50%;
+    right: -290px;
+    width: min(620px, 58vw);
+    aspect-ratio: 1;
+    transform: translateY(-46%);
+    opacity: 0.16;
+    pointer-events: none;
+  }
+  :global([data-theme-resolved='light']) .medallion {
+    opacity: 0.2;
+  }
+  @media (max-width: 1080px) {
+    .medallion {
+      right: -200px;
+      opacity: 0.12;
+    }
+  }
+  @media (max-width: 768px) {
+    .medallion {
+      top: calc(var(--nav-height) - 10px);
+      right: -140px;
+      width: 340px;
+      transform: none;
+      opacity: 0.12;
+    }
+  }
   .greeting {
     margin: 0 0 30px 4px;
     color: var(--accent);
@@ -35,7 +70,39 @@ import { site, hero } from '../data/site';
     font-weight: 400;
   }
   @media (max-width: 480px) {
-    .greeting {
+    .hero > :not(.medallion) {
+    position: relative;
+    z-index: 1;
+  }
+  .medallion {
+    position: absolute;
+    top: 50%;
+    right: -290px;
+    width: min(620px, 58vw);
+    aspect-ratio: 1;
+    transform: translateY(-46%);
+    opacity: 0.16;
+    pointer-events: none;
+  }
+  :global([data-theme-resolved='light']) .medallion {
+    opacity: 0.2;
+  }
+  @media (max-width: 1080px) {
+    .medallion {
+      right: -200px;
+      opacity: 0.12;
+    }
+  }
+  @media (max-width: 768px) {
+    .medallion {
+      top: calc(var(--nav-height) - 10px);
+      right: -140px;
+      width: 340px;
+      transform: none;
+      opacity: 0.12;
+    }
+  }
+  .greeting {
       margin: 0 0 20px 2px;
     }
   }

@@ -1,0 +1,163 @@
+---
+// Kyrgyz line ornaments, drawn in code so they stay sharp and follow the theme.
+// kochkor muuz (ram's horn) is the base motif; the medallion puts a tunduk
+// (the crown of the yurt, as on the flag) inside a ring of eight of them.
+// Color comes from `currentColor`, so set `color` on the element or a parent.
+interface Props {
+  kind: 'medallion' | 'horn' | 'divider';
+  class?: string;
+  size?: number;
+}
+const { kind, class: className, size } = Astro.props;
+
+// One horn pair in a 200×200 box, stem base at (100,150), curling up and out.
+const horn = 'M100 150 L100 120 C100 90 115 70 140 68 C165 66 176 88 166 104 C158 117 140 114 140 102 C140 93 151 90 155 97';
+const hornMirror = 'translate(200 0) scale(-1 1)';
+
+const r2 = (n: number) => Math.round(n * 10) / 10;
+const C = 200;
+const tunduk = [-22, 0, 22].flatMap((d) => {
+  const half = Math.sqrt(62 ** 2 - d ** 2);
+  const bow = d * 0.9;
+  return [
+    `M${C + d} ${r2(C - half)} Q${r2(C + d + bow)} ${C} ${C + d} ${r2(C + half)}`,
+    `M${r2(C - half)} ${C + d} Q${C} ${r2(C + d + bow)} ${r2(C + half)} ${C + d}`,
+  ];
+});
+const diamonds = Array.from({ length: 8 }, (_, i) => {
+  const deg = i * 45 + 22.5;
+  const a = (deg * Math.PI) / 180;
+  const x = r2(C + 158 * Math.sin(a));
+  const y = r2(C - 158 * Math.cos(a));
+  return { d: `M${x} ${r2(y - 7)} L${r2(x + 5)} ${y} L${x} ${r2(y + 7)} L${r2(x - 5)} ${y} Z`, t: `rotate(${deg} ${x} ${y})` };
+});
+const dots = Array.from({ length: 32 }, (_, i) => {
+  const a = (i * 2 * Math.PI) / 32;
+  return { x: r2(C + 180 * Math.sin(a)), y: r2(C - 180 * Math.cos(a)) };
+});
+---
+
+{
+  kind === 'medallion' && (
+    <svg
+      class:list={['ornament', 'ornament-medallion', className]}
+      viewBox="0 0 400 400"
+      width={size}
+      height={size}
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.4"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <circle cx="200" cy="200" r="196" pathLength="1" />
+      <circle cx="200" cy="200" r="188" pathLength="1" />
+      <circle cx="200" cy="200" r="70" pathLength="1" />
+      <circle cx="200" cy="200" r="62" pathLength="1" />
+      {tunduk.map((d) => <path d={d} pathLength="1" />)}
+      {Array.from({ length: 8 }, (_, i) => (
+        <g transform={`rotate(${i * 45} 200 200) translate(200 124) scale(0.62) translate(-100 -150)`}>
+          <path d={horn} pathLength="1" />
+          <path d={horn} transform={hornMirror} pathLength="1" />
+        </g>
+      ))}
+      {diamonds.map(({ d, t }) => <path d={d} transform={t} pathLength="1" />)}
+      <g fill="currentColor" stroke="none" class="ornament-dots">
+        {dots.map(({ x, y }) => <circle cx={x} cy={y} r="1.6" />)}
+      </g>
+    </svg>
+  )
+}
+
+{
+  kind === 'horn' && (
+    <svg
+      class:list={['ornament', 'ornament-horn', className]}
+      viewBox="40 60 120 120"
+      width={size}
+      height={size}
+      fill="none"
+      stroke="currentColor"
+      stroke-width="5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d={horn} />
+      <path d={horn} transform={hornMirror} />
+      <path d="M100 150 L109 161 L100 172 L91 161 Z" fill="currentColor" />
+    </svg>
+  )
+}
+
+{
+  kind === 'divider' && (
+    <div class:list={['ornament', 'ornament-divider', className]} aria-hidden="true">
+      <span class="ornament-rule" />
+      <svg viewBox="0 0 200 60" width="120" height="36" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+        <path d="M22 30 L30 24 L38 30 L30 36 Z" fill="currentColor" stroke="none" />
+        <path d="M162 30 L170 24 L178 30 L170 36 Z" fill="currentColor" stroke="none" />
+        <g transform="translate(100 30) scale(0.42) translate(-100 -110)">
+          <path d={horn} />
+          <path d={horn} transform={hornMirror} />
+          <path d="M100 150 L110 162 L100 174 L90 162 Z" fill="currentColor" stroke="none" />
+        </g>
+      </svg>
+      <span class="ornament-rule" />
+    </div>
+  )
+}
+
+<style>
+  .ornament {
+    color: var(--accent);
+    pointer-events: none;
+  }
+  .ornament-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+  .ornament-divider svg {
+    flex: none;
+  }
+  .ornament-rule {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to var(--dir, right), transparent, var(--accent-line));
+  }
+  .ornament-rule:last-child {
+    --dir: left;
+  }
+
+  /* The medallion draws itself in once, after the page is ready. */
+  :global(html.js) .ornament-medallion.draw :is(circle, path) {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+  :global(html.js) .ornament-medallion.draw .ornament-dots {
+    opacity: 0;
+  }
+  :global(html.js body.is-ready) .ornament-medallion.draw :is(circle, path) {
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 2.4s var(--ease) 0.4s;
+  }
+  :global(html.js body.is-ready) .ornament-medallion.draw .ornament-dots {
+    opacity: 1;
+    transition: opacity 1.2s ease 2s;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :global(html.js) .ornament-medallion.draw :is(circle, path) {
+      stroke-dashoffset: 0;
+    }
+    :global(html.js) .ornament-medallion.draw .ornament-dots {
+      opacity: 1;
+    }
+  }
+</style>

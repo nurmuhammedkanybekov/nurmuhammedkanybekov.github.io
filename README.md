@@ -29,5 +29,6 @@ All content lives in `src/data/site.ts`. Components only render it.
 - GitHub Pages must be set to **Settings → Pages → Source: GitHub Actions**.
 - The Remnant game lives in its own repo and is served at `/remnant`. Don't add a `public/remnant/` folder, it would shadow the game.
 - Colors are tokens in `global.css`. Don't hardcode them in components.
+- The gold Kyrgyz ornaments (ram's horn and tunduk) live in `src/components/Ornament.astro` and take their color from `--accent`.
 
 Layout inspired by [Brittany Chiang's v4](https://github.com/bchiang7/v4).

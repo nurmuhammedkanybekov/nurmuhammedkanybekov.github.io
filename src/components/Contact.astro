@@ -1,8 +1,11 @@
 ---
+import Ornament from './Ornament.astro';
 import { site, contact } from '../data/site';
 ---
 
 <section id="contact" class="contact">
+  <div class="backdrop" aria-hidden="true"><Ornament kind="medallion" /></div>
+  <div class="divider reveal"><Ornament kind="divider" /></div>
   <h2 class="overline reveal">04. {contact.overline}</h2>
   <p class="title reveal">{contact.heading}</p>
   <p class="text reveal">{contact.text}</p>
@@ -11,6 +14,7 @@ import { site, contact } from '../data/site';
 
 <style>
   .contact {
+    position: relative;
     max-width: 600px;
     margin: 0 auto 100px;
     text-align: center;
@@ -19,6 +23,26 @@ import { site, contact } from '../data/site';
     .contact {
       margin: 0 auto 50px;
     }
+  }
+  .contact > :not(.backdrop) {
+    position: relative;
+  }
+  .backdrop {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 560px;
+    max-width: 120vw;
+    aspect-ratio: 1;
+    transform: translate(-50%, -46%);
+    opacity: 0.07;
+    pointer-events: none;
+  }
+  :global([data-theme-resolved='light']) .backdrop {
+    opacity: 0.1;
+  }
+  .divider {
+    margin-bottom: 40px;
   }
   .overline {
     display: block;
